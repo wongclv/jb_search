@@ -1,0 +1,30 @@
+name: Job Title Scanner Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      test_input:
+        description: 'Text string to scan'
+        required: false
+        default: 'Candidate was a Director, customer service before moving into APAC Head of Customer Support.'
+
+jobs:
+  scan-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate Master List & Run Scanner
+        run: |
+          python main.py "${{ github.event.inputs.test_input }}"
