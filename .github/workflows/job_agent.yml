@@ -9,7 +9,7 @@ on:
 jobs:
   run-agent-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 60 # Increased execution limit to 60 minutes to prevent premature cancellation
+    timeout-minutes: 60 # Maximum workflow run execution window
 
     steps:
       - name: Checkout Code Repository
@@ -42,6 +42,6 @@ jobs:
         run: |
           git config --global user.name "Automated Cloud Job Agent"
           git config --global user.email "jobagent-bot@github.com"
-          git add schedule_tracker.json scraped_jobs_v3.csv evaluated_cache.json
+          git add schedule_tracker.json scraped_jobs_v3.csv evaluated_cache.json evaluation_report.json evaluator_progress.json
           git diff-index --quiet HEAD || git commit -m "Sync daily rotation trackers and historical evaluated caches [skip ci]"
           git push
