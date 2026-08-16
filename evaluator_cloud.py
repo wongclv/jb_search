@@ -166,6 +166,7 @@ def run_evaluation():
         job_id = job.get("job_id") or f"job_{idx}"
         title = job.get("title", "Unknown Title")
         company = job.get("company", "Unknown Company")
+        job_url = job.get("job_url") or job.get("url") or "#"
         description = job.get("description", "")
 
         # Skip if already evaluated successfully (and not rate limited previously)
@@ -181,6 +182,7 @@ def run_evaluation():
             progress[job_id] = {
                 "title": title,
                 "company": company,
+                "url": job_url,
                 "score": 0,
                 "assessment": "Skipped: Title outside target scope.",
                 "evaluated": True
@@ -194,6 +196,7 @@ def run_evaluation():
         progress[job_id] = {
             "title": title,
             "company": company,
+            "url": job_url,
             "score": eval_result["score"],
             "assessment": eval_result["assessment"],
             "evaluated": eval_result["evaluated"]
