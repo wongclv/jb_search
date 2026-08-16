@@ -10,6 +10,9 @@ CSV_FILE_PATH = "scraped_jobs_v3.csv"
 PROGRESS_FILE_PATH = "evaluator_progress.json"
 OUTPUT_REPORT_PATH = "evaluation_report.json"
 
+# Process max 30 jobs per run to guarantee execution under 5 minutes
+MAX_JOBS_PER_RUN = 30
+
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
@@ -99,7 +102,7 @@ def evaluate_job_with_retry(title, company, description, max_retries=3, initial_
     backoff = initial_backoff
     for attempt in range(max_retries):
         try:
-            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=20)
+            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=15)
             
             # Handle Rate Limits (HTTP 429) explicitly
             if response.status_code == 429:
@@ -161,8 +164,13 @@ def run_evaluation():
         jobs = list(reader)
 
     print(f"Loaded {len(jobs)} total jobs from CSV.")
+    evaluated_in_this_run = 0
 
     for idx, job in enumerate(jobs):
+        if evaluated_in_this_run >= MAX_JOBS_PER_RUN:
+            print(f"\nReached batch cap of {MAX_JOBS_PER_RUN} jobs for this run. Stopping early to prevent timeout.")
+            break
+
         job_id = job.get("job_id") or f"job_{idx}"
         title = job.get("title", "Unknown Title")
         company = job.get("company", "Unknown Company")
@@ -203,13 +211,14 @@ def run_evaluation():
         }
         
         save_progress(progress)
+        evaluated_in_this_run += 1
         time.sleep(0.2)
 
     # Save final report summary
     with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
         json.dump(progress, f, indent=2, ensure_ascii=False)
 
-    print(f"\nEvaluation complete. Full report written to {OUTPUT_REPORT_PATH}")
+    print(f"\nEvaluation complete ({evaluated_in_this_run} jobs evaluated in this batch). Full report written to {OUTPUT_REPORT_PATH}")
 
 if __name__ == "__main__":
     run_evaluation()
