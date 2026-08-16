@@ -12,7 +12,8 @@ OUTPUT_REPORT_PATH = "evaluation_report.json"
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL_NAME = "llama-3.3-70b-versatile"
+# Updated active model on GroqCloud (Replacing decommissioned llama-3.3-70b-versatile)
+MODEL_NAME = "qwen-2.5-32b"
 
 # Target job titles / keywords allowed for evaluation
 TARGET_JOB_TITLES = [
