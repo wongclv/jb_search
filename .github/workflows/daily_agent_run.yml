@@ -9,7 +9,6 @@ on:
 jobs:
   run-job-hunter:
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # Kills the job automatically if it hangs to protect billing minutes
 
     steps:
       - name: Check out repo code
@@ -28,7 +27,7 @@ jobs:
 
       - name: Generate Master Titles JSON
         run: |
-          python src/generator.py
+          python generator.py
 
       - name: Run Job Scraper
         run: |
