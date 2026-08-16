@@ -9,6 +9,9 @@ on:
 jobs:
   run-job-hunter:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
 
     steps:
       - name: Check out repo code
