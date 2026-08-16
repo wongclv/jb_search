@@ -9,14 +9,14 @@ on:
 jobs:
   run-agent-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # Kills the job automatically if it hangs to protect billing minutes
+    timeout-minutes: 60 # Increased execution limit to 60 minutes to prevent premature cancellation
 
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Initialize Python Runtime Environment
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
