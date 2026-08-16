@@ -13,7 +13,7 @@ OUTPUT_REPORT_PATH = "evaluation_report.json"
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
-# Official active Groq replacement model with optimal rate limits
+# Official active Groq model
 MODEL_NAME = "llama-3.3-70b-versatile"
 
 # Target job titles / keywords allowed for evaluation
@@ -169,7 +169,7 @@ def run_evaluation():
         job_url = job.get("job_url") or job.get("url") or "#"
         description = job.get("description", "")
 
-        # Skip if already evaluated successfully (and not rate limited previously)
+        # Skip if already evaluated successfully
         existing = progress.get(job_id)
         if existing and existing.get("evaluated") and "Rate limit reached" not in existing.get("assessment", ""):
             continue
@@ -203,7 +203,7 @@ def run_evaluation():
         }
         
         save_progress(progress)
-        time.sleep(0.2) # Fast pacing between jobs
+        time.sleep(0.2)
 
     # Save final report summary
     with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
