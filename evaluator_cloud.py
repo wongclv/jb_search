@@ -12,8 +12,9 @@ OUTPUT_REPORT_PATH = "evaluation_report.json"
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-# Updated active model on GroqCloud (Replacing decommissioned llama-3.3-70b-versatile)
-MODEL_NAME = "qwen-2.5-32b"
+
+# Official active Groq replacement model with optimal rate limits
+MODEL_NAME = "llama-3.3-70b-versatile"
 
 # Target job titles / keywords allowed for evaluation
 TARGET_JOB_TITLES = [
@@ -74,7 +75,7 @@ def is_title_allowed(title):
     # Check standard target titles
     return any(target in title_lower for target in TARGET_JOB_TITLES)
 
-def evaluate_job_with_retry(title, company, description, max_retries=5, initial_backoff=10):
+def evaluate_job_with_retry(title, company, description, max_retries=3, initial_backoff=3):
     if not GROQ_API_KEY:
         raise ValueError("GROQ_API_KEY environment variable is not set.")
 
@@ -83,7 +84,7 @@ def evaluate_job_with_retry(title, company, description, max_retries=5, initial_
         "Content-Type": "application/json"
     }
 
-    user_content = f"Job Title: {title}\nCompany: {company}\nJob Description:\n{description}"
+    user_content = f"Job Title: {title}\nCompany: {company}\nJob Description:\n{description[:2000]}"
     
     payload = {
         "model": MODEL_NAME,
@@ -98,12 +99,12 @@ def evaluate_job_with_retry(title, company, description, max_retries=5, initial_
     backoff = initial_backoff
     for attempt in range(max_retries):
         try:
-            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30)
+            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=20)
             
             # Handle Rate Limits (HTTP 429) explicitly
             if response.status_code == 429:
                 retry_after = response.headers.get("Retry-After")
-                wait_time = int(retry_after) if retry_after and retry_after.isdigit() else backoff
+                wait_time = int(retry_after) if retry_after and retry_after.isdigit() else min(backoff, 10)
                 print(f"  [429 Rate Limit] Backing off for {wait_time}s (Attempt {attempt + 1}/{max_retries})...")
                 time.sleep(wait_time)
                 backoff *= 2
@@ -199,7 +200,7 @@ def run_evaluation():
         }
         
         save_progress(progress)
-        time.sleep(1) # Gentle pacing between jobs
+        time.sleep(0.2) # Fast pacing between jobs
 
     # Save final report summary
     with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
