@@ -382,5 +382,325 @@
     "score": 60,
     "assessment": "The job title Product Manager at MORROW may align partially with the candidate's expertise in product strategy, but it seems to be more focused on product development rather than senior leadership or operations management. The candidate's extensive leadership experience may not be fully utilized in this role. Overall, it's a moderate fit.",
     "evaluated": true
+  },
+  "job_48": {
+    "title": "Product Manager",
+    "company": "MORROW & MORROW Medical",
+    "url": "https://sg.indeed.com/viewjob?jk=0a7f3da9ac008cbb",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_50": {
+    "title": "Product Manager - A26253",
+    "company": "Activate Interactive Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=9fefb5bd9db3e67d",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_49": {
+    "title": "Product Manager",
+    "company": "Mighty Jaxx International Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=231f676014fb288d",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_47": {
+    "title": "Director, Markets Efficiency Product Management",
+    "company": "Standard Chartered Bank",
+    "url": "https://sg.indeed.com/viewjob?jk=8ece1f6b86cac7ff",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_52": {
+    "title": "APAC Product Manager, Core Lab - Clinical Chemistry",
+    "company": "Roche",
+    "url": "https://sg.indeed.com/viewjob?jk=8abd6b078960a8e5",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_54": {
+    "title": "Staff Product Owner, Industrial & Physical AI, SMAI",
+    "company": "Micron Technology",
+    "url": "https://sg.indeed.com/viewjob?jk=5d7e1e31cf5e15e6",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_53": {
+    "title": "Trade Payables Finance Product Head, SVP - Asia South",
+    "company": "Citi",
+    "url": "https://sg.indeed.com/viewjob?jk=796291e44a595c38",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_51": {
+    "title": "APAC Product Manager, Core Lab - Immunoassay",
+    "company": "Roche",
+    "url": "https://sg.indeed.com/viewjob?jk=2c5f2f39ba28d590",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_55": {
+    "title": "Senior Product Compliance Specialist",
+    "company": "Castlery",
+    "url": "https://sg.indeed.com/viewjob?jk=769fdbbe3b7527e3",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_56": {
+    "title": "Director, Product Management",
+    "company": "Mastercard",
+    "url": "https://sg.indeed.com/viewjob?jk=3010574fb4f795db",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_57": {
+    "title": "Vice President - Head of Product Management - Product Management",
+    "company": "Nomura",
+    "url": "https://sg.indeed.com/viewjob?jk=df67af5ebc961410",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_58": {
+    "title": "Securities Finance, Product Solutions Delivery - AVP",
+    "company": "Citi",
+    "url": "https://sg.indeed.com/viewjob?jk=1df59c73499ca25f",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_59": {
+    "title": "Network Security - Service Product Manager",
+    "company": "Jointhire Singapore Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=b699314b33181494",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_63": {
+    "title": "Product Manager",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4442635105",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_61": {
+    "title": "Product Manager Intern (Fall 2026)",
+    "company": "Shopee",
+    "url": "https://www.linkedin.com/jobs/view/4432245059",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_62": {
+    "title": "Product Manager",
+    "company": "Meta",
+    "url": "https://www.linkedin.com/jobs/view/4432303739",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_64": {
+    "title": "Senior Product Manager, Trade & Supply Chain Finance",
+    "company": "Maybank Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4442047143",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_65": {
+    "title": "Product Manager",
+    "company": "PRISM+",
+    "url": "https://www.linkedin.com/jobs/view/4437944623",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_66": {
+    "title": "Product Manager",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4414442458",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_67": {
+    "title": "Product Manager",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4414441517",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_68": {
+    "title": "Product Manager (Leadership)",
+    "company": "Meta",
+    "url": "https://www.linkedin.com/jobs/view/4420199071",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_69": {
+    "title": "Intern, Product Manager",
+    "company": "Klook",
+    "url": "https://www.linkedin.com/jobs/view/4440698450",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_70": {
+    "title": "Product Manager",
+    "company": "foodpanda",
+    "url": "https://www.linkedin.com/jobs/view/4439974885",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_71": {
+    "title": "Product Manager",
+    "company": "YouTrip",
+    "url": "https://www.linkedin.com/jobs/view/4391566315",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_72": {
+    "title": "Product Manager",
+    "company": "PhillipCapital",
+    "url": "https://www.linkedin.com/jobs/view/4427329289",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_73": {
+    "title": "Product Manager",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4400707441",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_74": {
+    "title": "SG Business Product Manager - Operations",
+    "company": "Shopee",
+    "url": "https://www.linkedin.com/jobs/view/4382850836",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_75": {
+    "title": "Product Manager, Google Partner Innovation",
+    "company": "Google",
+    "url": "https://www.linkedin.com/jobs/view/4435264630",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_76": {
+    "title": "Product Manager",
+    "company": "E.SUN Financial Holding Co., Ltd",
+    "url": "https://www.linkedin.com/jobs/view/4434913984",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_80": {
+    "title": "IT Security Risk Analyst",
+    "company": "Endowus",
+    "url": "https://sg.indeed.com/viewjob?jk=8928a5353607a09c",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_81": {
+    "title": "Analyst, Performance Analytics, APEC, (Contractual)",
+    "company": "Marriott International",
+    "url": "https://sg.indeed.com/viewjob?jk=45fc0ccf6986a9d9",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_82": {
+    "title": "Business Analyst (Modern ERP / Azure DevOps / BPMN)",
+    "company": "TekisHub Consulting Services",
+    "url": "https://sg.indeed.com/viewjob?jk=c31197ba7d705b4e",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_83": {
+    "title": "Services - Summer Analyst, Singapore, 2027",
+    "company": "Citi",
+    "url": "https://sg.indeed.com/viewjob?jk=aee6de16a598bccc",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_84": {
+    "title": "Business Intelligence Analyst",
+    "company": "Singapore Business Federation",
+    "url": "https://sg.indeed.com/viewjob?jk=eedfcd02acd71c12",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_85": {
+    "title": "Analyst, Risk Management - AI (Malaysia/India)",
+    "company": "Standard Chartered Bank",
+    "url": "https://sg.indeed.com/viewjob?jk=8d60c4322ace1c69",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_86": {
+    "title": "Senior Advanced Analytics Analyst",
+    "company": "Medtronic",
+    "url": "https://sg.indeed.com/viewjob?jk=c182f031caffe87d",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_87": {
+    "title": "Business Analyst",
+    "company": "",
+    "url": "https://sg.indeed.com/viewjob?jk=e6368ddb47a5b1fe",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_77": {
+    "title": "Product Manager",
+    "company": "Nas Company",
+    "url": "https://www.linkedin.com/jobs/view/4434443339",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_78": {
+    "title": "Product Manager",
+    "company": "Activate Interactive",
+    "url": "https://www.linkedin.com/jobs/view/4437765003",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_79": {
+    "title": "Product Manager, R&D Efficiency - President's Office",
+    "company": "Shopee",
+    "url": "https://www.linkedin.com/jobs/view/4376495132",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
   }
 }
