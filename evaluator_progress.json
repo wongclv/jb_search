@@ -174,5 +174,213 @@
     "score": 0,
     "assessment": "Skipped: Title outside target scope.",
     "evaluated": true
+  },
+  "job_9": {
+    "title": "VP, Network SRE & Service Management Lead - SMBC",
+    "company": "Sumitomo Group",
+    "url": "https://sg.indeed.com/viewjob?jk=d12cea9b7686c84a",
+    "score": 90,
+    "assessment": "The job aligns well with the candidate's senior leadership and operations profile, as it involves leading network governance, managing asset lifecycles, and driving service reliability and operational improvement. The role's focus on strategic planning, team leadership, and process optimization also matches the candidate's expertise. However, the job's technical requirements and industry-specific knowledge may require some adaptation from the candidate's general operations management background.",
+    "evaluated": true
+  },
+  "job_12": {
+    "title": "Senior/Software Engineer",
+    "company": "Hitachi Energy",
+    "url": "https://sg.indeed.com/viewjob?jk=f80e6a51cab740df",
+    "score": 0,
+    "assessment": "The job posting for a Senior/Software Engineer at Hitachi Energy does not align with the candidate's senior leadership and operations management profile, as it requires technical expertise in software engineering and circuit design. The role's focus on design, development, and troubleshooting of machine control software is far removed from the candidate's expertise in operations management and strategic planning. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_14": {
+    "title": "Senior/Software Engineer",
+    "company": "Hitachi Rail",
+    "url": "https://sg.indeed.com/viewjob?jk=406cefae243f55d7",
+    "score": 0,
+    "assessment": "The job posting for a Senior/Software Engineer at Hitachi Rail does not align with the candidate's senior leadership and operations management profile, as it requires technical expertise in software engineering and circuit design. The role's focus on design, development, and troubleshooting is also not a match for the candidate's experience in strategic planning, business process optimization, and team leadership. Overall, the job description suggests a technical individual contributor role rather than a senior management or executive leadership position.",
+    "evaluated": true
+  },
+  "job_17": {
+    "title": "Assistant Manager - Application Security Architect",
+    "company": "Mercedes-Benz Group",
+    "url": "https://sg.indeed.com/viewjob?jk=a8d5189fd255b52a",
+    "score": 20,
+    "assessment": "The job posting for Assistant Manager - Application Security Architect at Mercedes-Benz Group does not closely align with the candidate's senior leadership and operations profile, as it appears to be a specialized technical role with a focus on application security architecture. The role requires specific expertise in cybersecurity and architecture, which is not mentioned in the candidate's profile. The candidate's background in operations management and strategic planning may be tangentially relevant, but the job's primary focus is on technical security aspects.",
+    "evaluated": true
+  },
+  "job_21": {
+    "title": "Software Engineer",
+    "company": "Applied Materials South East Asia",
+    "url": "https://www.linkedin.com/jobs/view/4440483531",
+    "score": 0,
+    "assessment": "The job title Software Engineer does not align with the candidate's senior leadership and operations management profile. The role appears to be a technical position that requires engineering expertise, which is not mentioned in the candidate's background. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_20": {
+    "title": "Software Engineer",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4442297748",
+    "score": 0,
+    "assessment": "The job title Software Engineer does not align with the candidate's senior leadership and operations management profile. The role appears to be a technical position that requires engineering expertise, which is not mentioned in the candidate's background. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_22": {
+    "title": "Full Stack Software Engineer I",
+    "company": "Booking.com",
+    "url": "https://www.linkedin.com/jobs/view/4433806855",
+    "score": 0,
+    "assessment": "The job title and description do not align with the candidate's senior leadership and operations management profile, as it appears to be a technical role focused on software engineering. The candidate's expertise in strategic planning, business process optimization, and team leadership is not relevant to this position. This role is not a good fit for the candidate's senior management and executive leadership background.",
+    "evaluated": true
+  },
+  "job_24": {
+    "title": "Software Engineer (BCA)",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4414455424",
+    "score": 0,
+    "assessment": "The job title Software Engineer does not align with the candidate's senior leadership and operations profile. The role appears to be a technical position that requires engineering skills, which is not mentioned in the candidate's expertise. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_26": {
+    "title": "Software Engineer, Backend",
+    "company": "Grab",
+    "url": "https://www.linkedin.com/jobs/view/4439841633",
+    "score": 0,
+    "assessment": "The job title Software Engineer, Backend does not align with the candidate's senior leadership and operations profile. The role appears to be a technical position that requires engineering expertise, which is not mentioned in the candidate's background. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_25": {
+    "title": "Software Engineer",
+    "company": "Thermo Fisher Scientific",
+    "url": "https://www.linkedin.com/jobs/view/4438055553",
+    "score": 0,
+    "assessment": "The job title Software Engineer does not align with the candidate's senior leadership and operations management profile. The role appears to be a technical position that requires engineering expertise, which is not mentioned in the candidate's background. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_29": {
+    "title": "computer software engineer",
+    "company": "Xiaomi Technology",
+    "url": "https://www.linkedin.com/jobs/view/4330057022",
+    "score": 0,
+    "assessment": "The job title and description do not align with the candidate's senior leadership and operations profile, as it specifically requires technical expertise in software engineering. The candidate's background in operations management and strategic planning is not relevant to this role. This position is a poor fit for the candidate's skills and experience.",
+    "evaluated": true
+  },
+  "job_28": {
+    "title": "Software Engineer - Product",
+    "company": "HeyMax",
+    "url": "https://www.linkedin.com/jobs/view/4435456473",
+    "score": 0,
+    "assessment": "The job title and description do not align with the candidate's senior leadership and operations management profile, as it appears to be a technical role. The candidate's expertise in strategic planning, business process optimization, and team leadership is not relevant to this position. This role seems to require a different set of skills and experience.",
+    "evaluated": true
+  },
+  "job_27": {
+    "title": "Software Engineer",
+    "company": "YouTrip",
+    "url": "https://www.linkedin.com/jobs/view/4404002266",
+    "score": 0,
+    "assessment": "The job title Software Engineer does not align with the candidate's senior leadership and operations management profile. The role appears to be a technical position that requires engineering expertise, which is not mentioned in the candidate's background. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_31": {
+    "title": "Junior Software Engineer",
+    "company": "Pave Bank",
+    "url": "https://www.linkedin.com/jobs/view/4434433404",
+    "score": 0,
+    "assessment": "The job title Junior Software Engineer does not align with the candidate's senior leadership and operations profile, as it is an entry-level position requiring technical skills rather than executive leadership experience. The candidate's expertise in operations management and strategic planning is not relevant to this role. The job is a poor fit for the candidate's seniority level and background.",
+    "evaluated": true
+  },
+  "job_30": {
+    "title": "Backend Software Engineer(Singapore)",
+    "company": "Baidu, Inc.",
+    "url": "https://www.linkedin.com/jobs/view/4409349511",
+    "score": 0,
+    "assessment": "The job title Backend Software Engineer does not align with the candidate's senior leadership and operations management profile. The role appears to be a technical position that requires engineering expertise, which is not mentioned in the candidate's background. This mismatch makes the job a poor fit for the candidate.",
+    "evaluated": true
+  },
+  "job_33": {
+    "title": "Software Engineer, Apple Online Store (Early Careers)",
+    "company": "Apple",
+    "url": "https://www.linkedin.com/jobs/view/4414165431",
+    "score": 0,
+    "assessment": "The job title and description do not align with the candidate's senior leadership and operations profile, as it is an early careers position for a software engineer. The role requires technical skills rather than executive leadership experience. The candidate's expertise in operations management and strategic planning is not relevant to this position.",
+    "evaluated": true
+  },
+  "job_36": {
+    "title": "Software Engineer",
+    "company": "LRDTECH",
+    "url": "https://www.linkedin.com/jobs/view/4412741783",
+    "score": 0,
+    "assessment": "The job title Software Engineer does not align with the candidate's senior leadership or operations profile, as it appears to be a technical role. The candidate's expertise in operations management, strategic planning, and team leadership is not relevant to this position. This role is a poor fit for the candidate's background and experience.",
+    "evaluated": true
+  },
+  "job_39": {
+    "title": "Software Engineer, Excellence & Performance",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4443479553",
+    "score": 0,
+    "assessment": "The job title and description do not align with the candidate's senior leadership and operations profile, as it appears to be a technical role focused on software engineering. The candidate's expertise in operations management, strategic planning, and team leadership is not relevant to this position. This role is not a good fit for the candidate's senior management and executive leadership experience.",
+    "evaluated": true
+  },
+  "job_41": {
+    "title": "Digital Product Manager",
+    "company": "HR Solutions",
+    "url": "https://sg.indeed.com/viewjob?jk=beb543dfb7da41a4",
+    "score": 80,
+    "assessment": "The job aligns well with the candidate's senior leadership and operations profile, as it involves leading AI delivery, mentoring a team, and driving business growth, which matches their expertise in strategic planning, team leadership, and business process optimization. However, the role has a strong focus on AI consulting and solutions, which may require additional technical expertise. Overall, the candidate's extensive leadership experience and ability to drive operational efficiency make them a strong fit for this senior role.",
+    "evaluated": true
+  },
+  "job_40": {
+    "title": "Senior Product Manager, Spot Trading",
+    "company": "Binance",
+    "url": "https://sg.indeed.com/viewjob?jk=d8b6cd2eef990aa4",
+    "score": 60,
+    "assessment": "The job aligns moderately with the candidate's profile, as it requires strategic planning and product strategy, but is more focused on product management and growth rather than broad operations management or executive leadership. The role does involve working with multiple teams, which could utilize the candidate's team leadership skills, but overall, it seems more tailored to a product-centric professional. The company and industry are innovative and fast-paced, which could be appealing to a senior leader looking for a new challenge.",
+    "evaluated": true
+  },
+  "job_42": {
+    "title": "APAC Index Product Development - Bloomberg Indices, Singapore",
+    "company": "Bloomberg",
+    "url": "https://sg.indeed.com/viewjob?jk=98b6bb51ffe32f0f",
+    "score": 60,
+    "assessment": "The job aligns moderately with the candidate's senior leadership and operations profile, as it involves strategic planning and product development, but may require more specialized knowledge of the financial industry and indexing trends. The role's focus on product development and commercialization also suggests a need for technical expertise that may not be directly mentioned in the candidate's profile. Overall, the candidate's operational management and team leadership skills could be valuable, but the fit is not perfect due to the specific industry and technical requirements.",
+    "evaluated": true
+  },
+  "job_43": {
+    "title": "Senior Director, Product Development - Global Tea",
+    "company": "The Coca-Cola Company",
+    "url": "https://sg.indeed.com/viewjob?jk=32b2794d0c1c4b8e",
+    "score": 90,
+    "assessment": "The job aligns well with the candidate's senior leadership and operations profile, as it involves leading and developing high-performing teams, setting direction, and driving innovation at scale. The role's focus on strategic planning, product strategy, and team leadership also matches the candidate's expertise. However, the job's specific focus on product development in the tea category may require some adaptation from the candidate's general operations management background.",
+    "evaluated": true
+  },
+  "job_44": {
+    "title": "Deputy Manager - IT (Freight Technology Product)",
+    "company": "ST Logistics",
+    "url": "https://sg.indeed.com/viewjob?jk=4a47e311cad8b12b",
+    "score": 80,
+    "assessment": "The job aligns well with the candidate's operations management and strategic planning expertise, as it involves defining and managing technology products to improve operational efficiency and drive business growth. However, the title 'Deputy Manager' may be a slight mismatch with the candidate's target seniority of Senior Management/Executive Leadership. The role's focus on digital transformation and product strategy also aligns with the candidate's background in product strategy and team leadership.",
+    "evaluated": true
+  },
+  "job_45": {
+    "title": "Chief Product & Technology Officer(CPTO)",
+    "company": "ALPHA X TECHNOLOGY PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=b1c2213b79ae0a7b",
+    "score": 90,
+    "assessment": "The job aligns well with the candidate's senior leadership and operations profile, particularly in product strategy, team leadership, and business process optimization. The role of Chief Product & Technology Officer requires defining and leading product and technology strategy, which matches the candidate's expertise in strategic planning and product strategy. The candidate's extensive leadership experience managing teams and driving operational efficiency also makes them a strong fit for this position.",
+    "evaluated": true
+  },
+  "job_46": {
+    "title": "Policy Manager, Cross-Issue and Product Policy",
+    "company": "TikTok",
+    "url": "https://sg.indeed.com/viewjob?jk=a27cd94621d31e39",
+    "score": 40,
+    "assessment": "The job aligns partially with the candidate's senior leadership and operations profile, as it involves strategic planning and policy development, but it leans more towards policy management and does not explicitly require operations management or team leadership expertise. The role seems to focus on policy development and collaboration with various stakeholders, which may not fully utilize the candidate's extensive leadership experience in driving operational efficiency and scalable execution.",
+    "evaluated": true
+  },
+  "job_60": {
+    "title": "Product Manager",
+    "company": "MORROW",
+    "url": "https://www.linkedin.com/jobs/view/4443760285",
+    "score": 60,
+    "assessment": "The job title Product Manager at MORROW may align partially with the candidate's expertise in product strategy, but it seems to be more focused on product development rather than senior leadership or operations management. The candidate's extensive leadership experience may not be fully utilized in this role. Overall, it's a moderate fit.",
+    "evaluated": true
   }
 }
