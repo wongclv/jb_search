@@ -1,177 +1,172 @@
 import os
 import json
-import csv
 import time
-import requests
-from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import logging
+from groq import Groq, RateLimitError, APIError
 
-# --- Configuration & Paths ---
-CSV_FILE_PATH = "scraped_jobs_v3.csv"
-PROGRESS_FILE_PATH = "evaluator_progress.json"
-OUTPUT_REPORT_PATH = "evaluation_report.json"
+# Configure Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
-# Process up to 40 un-evaluated jobs per run to ensure fast execution (< 5 mins)
-MAX_JOBS_PER_RUN = 40
-MAX_WORKERS = 4  # Parallel requests to Groq API
+# Initialize Groq Client
+client = Groq()
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+# Model Fallback Configuration
+PRIMARY_MODEL = "llama-3.3-70b-versatile"
+FALLBACK_MODEL = "llama-3.1-8b-instant"
 
-MODEL_NAME = "llama-3.3-70b-versatile"
-
-TARGET_JOB_TITLES = [
-    "director", "head", "lead", "vp", "vice president", 
-    "chief", "manager", "senior manager", "general manager",
-    "operations", "product", "software engineer"
+# Keywords for local pre-filtering to prevent wasting LLM quota
+EXCLUDE_KEYWORDS = [
+    "software engineer", "developer", "backend engineer", 
+    "frontend engineer", "fullstack", "data engineer", "devops"
 ]
 
-SKIP_CHECK_TITLE_FILTER = [
-    "director", "head", "lead", "vp", "vice president", 
-    "chief", "general manager", "cpto", "coo"
-]
+def is_title_in_target_scope(job_title: str) -> bool:
+    """Pre-screen job titles locally to avoid unnecessary API calls."""
+    title_lower = job_title.lower()
+    for kw in EXCLUDE_KEYWORDS:
+        if kw in title_lower:
+            return False
+    return True
 
-CANDIDATE_PROFILE = """
-Candidate Profile:
-- Target Seniority: Senior Management / Executive Leadership (Director, VP, Head, GM, Chief).
-- Expertise: Operations Management, Strategic Planning, Business Process Optimization, Team Leadership, Product Strategy.
-- Background: Extensive leadership experience managing teams, driving operational efficiency, and scalable execution.
-"""
+def call_groq_with_backoff(prompt_messages, max_retries=5, base_delay=3.0):
+    """
+    Executes Groq API completion with exponential backoff for rate limits (429)
+    and automatic fallback to a secondary model if retries expire.
+    """
+    models_to_try = [PRIMARY_MODEL, FALLBACK_MODEL]
 
-SYSTEM_PROMPT = f"""
-You are an expert AI Executive Recruiter. Your task is to evaluate whether a job posting is a good fit for the candidate provided.
-
-{CANDIDATE_PROFILE}
-
-Analyze the job title, company, and description. Provide:
-1. A Score (0 to 100) on how well the job aligns with the candidate's senior leadership/operations profile.
-2. A brief 2-3 sentence assessment explaining the rationale.
-
-Return output strictly in valid JSON format with the following keys:
-- "score": (integer 0-100)
-- "assessment": (string)
-"""
-
-def load_progress():
-    if Path(PROGRESS_FILE_PATH).exists():
-        with open(PROGRESS_FILE_PATH, "r", encoding="utf-8") as f:
+    for model in models_to_try:
+        logging.info(f"Attempting evaluation with model: {model}")
+        for attempt in range(max_retries):
             try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return {}
-    return {}
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=prompt_messages,
+                    temperature=0.1,
+                    max_tokens=600
+                )
+                return response.choices[0].message.content
 
-def save_progress(progress_data):
-    with open(PROGRESS_FILE_PATH, "w", encoding="utf-8") as f:
-        json.dump(progress_data, f, indent=2, ensure_ascii=False)
+            except RateLimitError as e:
+                delay = base_delay * (2 ** attempt)
+                logging.warning(
+                    f"Rate limit 429 encountered on model '{model}'. "
+                    f"Retrying in {delay:.1f}s (Attempt {attempt + 1}/{max_retries})..."
+                )
+                time.sleep(delay)
 
-def is_title_allowed(title):
-    title_lower = title.lower()
-    if any(keyword in title_lower for keyword in SKIP_CHECK_TITLE_FILTER):
-        return True
-    return any(target in title_lower for target in TARGET_JOB_TITLES)
+            except APIError as e:
+                if "429" in str(e):
+                    delay = base_delay * (2 ** attempt)
+                    logging.warning(
+                        f"API Error 429 encountered on model '{model}'. "
+                        f"Retrying in {delay:.1f}s (Attempt {attempt + 1}/{max_retries})..."
+                    )
+                    time.sleep(delay)
+                else:
+                    logging.error(f"Unrecoverable API Error on model '{model}': {e}")
+                    break  # Try fallback model if available
 
-def evaluate_single_job(job, job_id):
-    title = job.get("title", "Unknown Title")
-    company = job.get("company", "Unknown Company")
-    job_url = job.get("job_url") or job.get("url") or "#"
-    description = job.get("description", "")
+        logging.warning(f"Exceeded max retries for model '{model}'. Trying fallback if available...")
 
-    if not is_title_allowed(title):
-        return job_id, {
+    raise RuntimeError("All models and retries failed due to API rate limits or errors.")
+
+
+def evaluate_single_job(job_id: str, job_data: dict) -> dict:
+    """
+    Evaluates an individual job posting safely with rate-limit handling and pre-screening.
+    """
+    title = job_data.get("title", "")
+    company = job_data.get("company", "")
+
+    # Local Pre-screening Check
+    if not is_title_in_target_scope(title):
+        logging.info(f"Skipping '{title}' at {company} (Title outside target scope).")
+        return {
             "title": title,
             "company": company,
-            "url": job_url,
             "score": 0,
             "assessment": "Skipped: Title outside target scope.",
             "evaluated": True
         }
 
-    if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY environment variable is not set.")
+    # Prepare LLM Prompt
+    system_prompt = (
+        "You are an executive job matching assistant. Evaluate the job posting "
+        "and return a suitability score from 0 to 100 alongside a brief assessment."
+    )
+    user_prompt = f"Title: {title}\nCompany: {company}\nDetails: {json.dumps(job_data)}"
 
-    headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json"
-    }
+    prompt_messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
+    ]
 
-    user_content = f"Job Title: {title}\nCompany: {company}\nJob Description:\n{description[:1500]}"
-    payload = {
-        "model": MODEL_NAME,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_content}
-        ],
-        "temperature": 0.2,
-        "response_format": {"type": "json_object"}
-    }
-
-    for attempt in range(3):
-        try:
-            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=15)
-            if response.status_code == 429:
-                time.sleep(5 * (attempt + 1))
-                continue
-            response.raise_for_status()
-            res_data = response.json()
-            parsed = json.loads(res_data["choices"][0]["message"]["content"])
-            return job_id, {
-                "title": title,
-                "company": company,
-                "url": job_url,
-                "score": parsed.get("score", 0),
-                "assessment": parsed.get("assessment", "No assessment provided."),
-                "evaluated": True
-            }
-        except Exception as e:
-            if attempt == 2:
-                return job_id, {
-                    "title": title,
-                    "company": company,
-                    "url": job_url,
-                    "score": 0,
-                    "assessment": f"Failed API evaluation: {str(e)}",
-                    "evaluated": True
-                }
-            time.sleep(2)
-
-def run_evaluation():
-    progress = load_progress()
-    if not Path(CSV_FILE_PATH).exists():
-        print(f"Error: {CSV_FILE_PATH} not found.")
-        return
-
-    with open(CSV_FILE_PATH, "r", encoding="utf-8") as f:
-        jobs = list(csv.DictReader(f))
-
-    print(f"Loaded {len(jobs)} total jobs from CSV.")
-
-    # Filter for un-evaluated jobs
-    pending_jobs = []
-    for idx, job in enumerate(jobs):
-        job_id = job.get("job_id") or f"job_{idx}"
-        existing = progress.get(job_id)
-        if not (existing and existing.get("evaluated")):
-            pending_jobs.append((job_id, job))
-
-    jobs_to_process = pending_jobs[:MAX_JOBS_PER_RUN]
-    print(f"Processing {len(jobs_to_process)} jobs in this run using {MAX_WORKERS} parallel threads...")
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(evaluate_single_job, job, job_id): job_id for job_id, job in jobs_to_process}
-        for future in as_completed(futures):
+    try:
+        assessment_text = call_groq_with_backoff(prompt_messages)
+        
+        # Placeholder score parsing (adjust according to your output parsing logic)
+        score = 0
+        if "Score:" in assessment_text:
             try:
-                job_id, result = future.result()
-                progress[job_id] = result
-                save_progress(progress)
-                print(f"Completed: {result['title']} @ {result['company']} (Score: {result['score']})")
-            except Exception as e:
-                print(f"Error evaluating job: {e}")
+                score_str = assessment_text.split("Score:")[1].split("/")[0].strip()
+                score = int(score_str)
+            except Exception:
+                score = 0
 
-    with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
-        json.dump(progress, f, indent=2, ensure_ascii=False)
+        return {
+            "title": title,
+            "company": company,
+            "score": score,
+            "assessment": assessment_text,
+            "evaluated": True
+        }
 
-    print(f"\nBatch complete. Saved to {OUTPUT_REPORT_PATH}")
+    except Exception as e:
+        logging.error(f"Failed to evaluate job {job_id}: {e}")
+        return {
+            "title": title,
+            "company": company,
+            "score": 0,
+            "assessment": f"API Error: {str(e)}",
+            "evaluated": False
+        }
+
+
+def run_evaluation_pipeline(input_jobs: dict, output_file_path: str = "evaluation_report.json"):
+    """
+    Runs the full evaluation pipeline across all raw job listings.
+    """
+    results = {}
+    total_jobs = len(input_jobs)
+    logging.info(f"Starting pipeline evaluation for {total_jobs} jobs...")
+
+    for idx, (job_id, job_data) in enumerate(input_jobs.items(), 1):
+        logging.info(f"Processing [{idx}/{total_jobs}]: {job_id}")
+        
+        eval_result = evaluate_single_job(job_id, job_data)
+        results[job_id] = eval_result
+
+        # Inter-request pacing delay to prevent hitting RPM limits
+        time.sleep(1.5)
+
+    # Save final report to JSON
+    with open(output_file_path, "w", encoding="utf-8") as f:
+        json.dump(results, f, indent=2)
+
+    logging.info(f"Evaluation finished! Results saved to {output_file_path}")
+    return results
+
 
 if __name__ == "__main__":
-    run_evaluation()
+    # Example execution entry point
+    input_file = "raw_jobs.json"
+    if os.path.exists(input_file):
+        with open(input_file, "r", encoding="utf-8") as f:
+            raw_jobs = json.load(f)
+        run_evaluation_pipeline(raw_jobs)
+    else:
+        logging.warning(f"No '{input_file}' found. Script ready for cloud execution.")
