@@ -702,5 +702,325 @@
     "score": 0,
     "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
     "evaluated": true
+  },
+  "job_93": {
+    "title": "Risk Business Analyst",
+    "company": "Quick Space Recruiter",
+    "url": "https://sg.indeed.com/viewjob?jk=a7e6f3139cd28e4d",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_92": {
+    "title": "Finance Analyst - Regional Treasury",
+    "company": "Caterpillar",
+    "url": "https://sg.indeed.com/viewjob?jk=3d91c3e9d3c803ab",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_91": {
+    "title": "Senior Business Analyst (Payment)",
+    "company": "Crédit Agricole",
+    "url": "https://sg.indeed.com/viewjob?jk=69cd05ac16aa4e32",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_89": {
+    "title": "Research Assistant (Sparse Boosting and Spatial Data Analytics)",
+    "company": "Nanyang Technological University",
+    "url": "https://sg.indeed.com/viewjob?jk=86581754f54ca4a3",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_90": {
+    "title": "Business Analyst (Compliance/Data)",
+    "company": "Synpulse",
+    "url": "https://sg.indeed.com/viewjob?jk=3d25d4eeba7b32fe",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_88": {
+    "title": "Business System Analyst",
+    "company": "ALMR Consulting Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=cc1bc1441738612a",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_95": {
+    "title": "Business Analyst (3bqSXU)",
+    "company": "Erast Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=43931146e3b12a7d",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_96": {
+    "title": "Equity Research Analyst",
+    "company": "Novelty Dept Store Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=f624c65ac8bc18b2",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_97": {
+    "title": "Business Analyst",
+    "company": "Howden Group",
+    "url": "https://sg.indeed.com/viewjob?jk=0e3f23f5841fd849",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_98": {
+    "title": "Senior Logistics Procurement Analyst",
+    "company": "Solventum",
+    "url": "https://sg.indeed.com/viewjob?jk=3759e0a1904600b0",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_99": {
+    "title": "Systems Analyst – Equities Trading Systems",
+    "company": "D L Resources Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=169147a22d38b31e",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_100": {
+    "title": "Senior Data Analyst, ShopeeFood",
+    "company": "Shopee",
+    "url": "https://www.linkedin.com/jobs/view/4437340805",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_101": {
+    "title": "Executive, Data Excellence",
+    "company": "SEPHORA",
+    "url": "https://www.linkedin.com/jobs/view/4442700853",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_102": {
+    "title": "Data Analyst",
+    "company": "Sodexo",
+    "url": "https://www.linkedin.com/jobs/view/4442469727",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_103": {
+    "title": "Data Analysis Intern",
+    "company": "Club Med",
+    "url": "https://www.linkedin.com/jobs/view/4442428652",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_104": {
+    "title": "Workforce Analytics & Management Specialist (Live & Monetization)",
+    "company": "TikTok",
+    "url": "https://www.linkedin.com/jobs/view/4438483340",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_105": {
+    "title": "Data Analytics Engineer",
+    "company": "Micron Technology",
+    "url": "https://www.linkedin.com/jobs/view/4431236489",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_106": {
+    "title": "Data Analyst Intern",
+    "company": "VT Markets",
+    "url": "https://www.linkedin.com/jobs/view/4439964653",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_107": {
+    "title": "Data Analyst (Finance)",
+    "company": "Sea",
+    "url": "https://www.linkedin.com/jobs/view/4432238200",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_108": {
+    "title": "Data Analyst",
+    "company": "Advanced MedTech",
+    "url": "https://www.linkedin.com/jobs/view/4439873763",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_109": {
+    "title": "Data Business Analyst Project Intern (Global Business Solutions) - 2025 Start (BS/MS)",
+    "company": "TikTok",
+    "url": "https://www.linkedin.com/jobs/view/4319839832",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_110": {
+    "title": "Data Analyst",
+    "company": "Advanced Energy",
+    "url": "https://www.linkedin.com/jobs/view/4410826129",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_111": {
+    "title": "Associate Analyst/Analyst/Senior Analyst, Data Analytics",
+    "company": "Marina Bay Sands",
+    "url": "https://www.linkedin.com/jobs/view/4420247249",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_112": {
+    "title": "Data Analyst",
+    "company": "Yara International",
+    "url": "https://www.linkedin.com/jobs/view/4430429056",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_113": {
+    "title": "Business Intelligence Intern",
+    "company": "FUJIFILM Business Innovation Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4436046914",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_114": {
+    "title": "Data Analyst Excel - Remote",
+    "company": "YO IT Consulting",
+    "url": "https://www.linkedin.com/jobs/view/4435406063",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_115": {
+    "title": "Data Analyst",
+    "company": "Constructor Tech",
+    "url": "https://www.linkedin.com/jobs/view/4432552682",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_116": {
+    "title": "Financial Data Analyst",
+    "company": "Apple",
+    "url": "https://www.linkedin.com/jobs/view/4414150997",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_117": {
+    "title": "Data Analyst",
+    "company": "Williams-Sonoma, Inc.",
+    "url": "https://www.linkedin.com/jobs/view/4436189757",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_118": {
+    "title": "Data Analyst",
+    "company": "Photon",
+    "url": "https://www.linkedin.com/jobs/view/4443800107",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_119": {
+    "title": "Data Analyst",
+    "company": "Photon",
+    "url": "https://www.linkedin.com/jobs/view/4443499762",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_121": {
+    "title": "Certification Program Specialist, GMA",
+    "company": "UL Solutions",
+    "url": "https://sg.indeed.com/viewjob?jk=dce0ccedffb14551",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_123": {
+    "title": "Technology Support III - Merchant Services",
+    "company": "JPMorganChase",
+    "url": "https://sg.indeed.com/viewjob?jk=6ef486dd0ce63468",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_124": {
+    "title": "Pre-Sales Lead - SAP Solutions",
+    "company": "Capgemini",
+    "url": "https://sg.indeed.com/viewjob?jk=4cc8b194d035b741",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_122": {
+    "title": "Market Data Services - Product Associate",
+    "company": "JPMorganChase",
+    "url": "https://sg.indeed.com/viewjob?jk=6482fcf94df6b0c1",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_94": {
+    "title": "Risk Manager, Risk & Quant Analytics",
+    "company": "Polymer Capital Hong Kong",
+    "url": "https://sg.indeed.com/viewjob?jk=03c772995aed845a",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_127": {
+    "title": "Sales and Marketing Assistant (Base + Commission)",
+    "company": "Sinpeak Pte. Ltd.",
+    "url": "https://sg.indeed.com/viewjob?jk=422243b8f76abfc7",
+    "score": 0,
+    "assessment": "Skipped: Title outside target scope.",
+    "evaluated": true
+  },
+  "job_120": {
+    "title": "Production Operator",
+    "company": "Element Solutions Inc",
+    "url": "https://sg.indeed.com/viewjob?jk=24c5751afff3aa84",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_125": {
+    "title": "Onsite Service Coordinator",
+    "company": "Avantor",
+    "url": "https://sg.indeed.com/viewjob?jk=5080d3a59c6f7e99",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_126": {
+    "title": "Pre-Sales Lead - SAP Solutions",
+    "company": "Capgemini",
+    "url": "https://sg.indeed.com/viewjob?jk=d756307572af393e",
+    "score": 0,
+    "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
   }
 }
