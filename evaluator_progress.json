@@ -1022,5 +1022,325 @@
     "score": 0,
     "assessment": "Failed API evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
     "evaluated": true
+  },
+  "job_128": {
+    "title": "Specialist, Technology Partnership",
+    "company": "MSD",
+    "url": "https://sg.indeed.com/viewjob?jk=f1cbf24f3f08dd07",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_130": {
+    "title": "SEA Governance OnCall Service Project Intern (TikTok Shop) - 2026 Start",
+    "company": "TikTok",
+    "url": "https://sg.indeed.com/viewjob?jk=338ebf62af80b464",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_131": {
+    "title": "F&B Service Crew (Part-time) | Immediate Hiring",
+    "company": "Redzgroup Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=95e80ec1636a1b65",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_129": {
+    "title": "F&B Service Crew (Part-time) | Immediate Hiring",
+    "company": "Redzgroup Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=7f2a9170dc8636d5",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_132": {
+    "title": "F&B Service Crew (Part-time) | Immediate Hiring",
+    "company": "Redzgroup Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=d081f085b1aba769",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_133": {
+    "title": "Senior Application Support Engineer (Banking Payment)",
+    "company": "Sopra Steria",
+    "url": "https://sg.indeed.com/viewjob?jk=c8122b1a09e17a72",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_135": {
+    "title": "F&B Service Crew (Part-time) | Immediate Hiring",
+    "company": "Redzgroup Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=4e904986b0c6638a",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_134": {
+    "title": "F&B Service Crew (Part-time) | Immediate Hiring",
+    "company": "Redzgroup Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=77d8cb2dcbc8a1b0",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_136": {
+    "title": "Controls Project Engineer – Programming",
+    "company": "Trane Technologies",
+    "url": "https://sg.indeed.com/viewjob?jk=9d37d3dbcb5c0194",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_137": {
+    "title": "Senior Director, Technical Services (Cloud and Cortex)",
+    "company": "Palo Alto Networks",
+    "url": "https://sg.indeed.com/viewjob?jk=b27949a5a3a45e66",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_138": {
+    "title": "Reservation Supervisor",
+    "company": "Hilton",
+    "url": "https://sg.indeed.com/viewjob?jk=6b3b6903499a9dbc",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_139": {
+    "title": "Head of Operations",
+    "company": "DHL",
+    "url": "https://sg.indeed.com/viewjob?jk=21a719c87372f374",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_140": {
+    "title": "Senior Business Developer",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=7a9037bc883c9b05",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_141": {
+    "title": "Senior Project Engineer (2 -Year Fixed Term)",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=2af969fd0eac7942",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_142": {
+    "title": "Production Technician (12 Hours Shift)",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=c1a8f371df8f9cdf",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_143": {
+    "title": "HR Business Partner",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=fb63bcd0720d9d06",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_144": {
+    "title": "Operations Technician",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=4cc63367a84bc6c7",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_145": {
+    "title": "Customer Operations Consultant",
+    "company": "Flo Energy",
+    "url": "https://www.linkedin.com/jobs/view/4443854689",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_146": {
+    "title": "Customer Service Solution Manager - Customer Support",
+    "company": "TikTok",
+    "url": "https://www.linkedin.com/jobs/view/4444296214",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_147": {
+    "title": "FL Customer Service Support [FLO FLC]",
+    "company": "A.P. Moller - Maersk",
+    "url": "https://www.linkedin.com/jobs/view/4444422242",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_148": {
+    "title": "Business Operations & Customer Service",
+    "company": "STMicroelectronics",
+    "url": "https://www.linkedin.com/jobs/view/4444427676",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_149": {
+    "title": "Customer Service Specialist",
+    "company": "bilibili Group",
+    "url": "https://www.linkedin.com/jobs/view/4443827075",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_150": {
+    "title": "Customer Service Delivery Support Coordinator, Operational Excellence, Shopee Xpress SG",
+    "company": "Shopee",
+    "url": "https://www.linkedin.com/jobs/view/4432246084",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_151": {
+    "title": "Customer Service Specialist (7 months)",
+    "company": "The Coca-Cola Company",
+    "url": "https://www.linkedin.com/jobs/view/4443902199",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_152": {
+    "title": "Hotel/Tourism Jobs in Fairmont Singapore & Swissôtel The Stamford",
+    "company": "Job Vacancy At Dubai",
+    "url": "https://www.linkedin.com/jobs/view/4443905202",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_153": {
+    "title": "Senior CRM Operations Executive",
+    "company": "PEDRO",
+    "url": "https://www.linkedin.com/jobs/view/4442939172",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_154": {
+    "title": "Manager, Customer Support",
+    "company": "Advanced Energy",
+    "url": "https://www.linkedin.com/jobs/view/4443098420",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_155": {
+    "title": "Senior Regional Manager, Customer/ Partner Operations (Based in Yokohama)",
+    "company": "Agoda",
+    "url": "https://www.linkedin.com/jobs/view/4396582681",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_156": {
+    "title": "Customer Experience and Operations Executive",
+    "company": "PRISM+",
+    "url": "https://www.linkedin.com/jobs/view/4437735001",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_157": {
+    "title": "Manager, Regional Guest Information and Recognition",
+    "company": "Four Seasons",
+    "url": "https://www.linkedin.com/jobs/view/4442701298",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_158": {
+    "title": "Store Manager",
+    "company": "Pandora",
+    "url": "https://www.linkedin.com/jobs/view/4440121645",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_159": {
+    "title": "Marketing, Events & Ops Associate",
+    "company": "Boomarang Bistro & Bar",
+    "url": "https://www.linkedin.com/jobs/view/4442562720",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_160": {
+    "title": "Warehouse Customer Service Representative",
+    "company": "UPS",
+    "url": "https://www.linkedin.com/jobs/view/4242248302",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_161": {
+    "title": "Passenger Relations Team Leader - Lounge",
+    "company": "Accor",
+    "url": "https://www.linkedin.com/jobs/view/4441763339",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_162": {
+    "title": "Guest Experience Expert (Bell, i-Job Program)",
+    "company": "Marriott International",
+    "url": "https://www.linkedin.com/jobs/view/4424194564",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_163": {
+    "title": "Warehouse Customer Service Representative",
+    "company": "UPS",
+    "url": "https://www.linkedin.com/jobs/view/4242242906",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_164": {
+    "title": "Warehouse Customer Service Representative",
+    "company": "UPS",
+    "url": "https://www.linkedin.com/jobs/view/4242249212",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_165": {
+    "title": "Sales & Service Support Executive, HSR",
+    "company": "Hermès",
+    "url": "https://www.linkedin.com/jobs/view/4404766058",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_166": {
+    "title": "Warehouse Customer Service Representative",
+    "company": "UPS",
+    "url": "https://www.linkedin.com/jobs/view/4242241808",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_167": {
+    "title": "Warehouse Customer Service Representative",
+    "company": "UPS",
+    "url": "https://www.linkedin.com/jobs/view/4242248301",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
   }
 }
