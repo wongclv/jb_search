@@ -1,232 +1,197 @@
 import os
 import json
+import csv
 import time
-import logging
 import requests
-from groq import Groq, RateLimitError, APIError
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Configure Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s"
-)
+# --- Configuration & Paths ---
+CSV_FILE_PATH = "scraped_jobs_v3.csv"
+PROGRESS_FILE_PATH = "evaluator_progress.json"
+OUTPUT_REPORT_PATH = "evaluation_report.json"
 
-# Initialize Groq Client
-client = Groq()
+MAX_JOBS_PER_RUN = 40
+MAX_WORKERS = 4
 
-# Model Configurations
-PRIMARY_MODEL = "llama-3.3-70b-versatile"
-FALLBACK_MODEL = "llama-3.1-8b-instant"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
+MAILGUN_DOMAIN = os.environ.get("MAILGUN_DOMAIN")
+RECIPIENT_EMAIL = os.environ.get("RECIPIENT_EMAIL", "callcentre.wong@gmail.com")
 
-# Mailgun Environment Variables
-MAILGUN_API_KEY = os.getenv("MAILGUN_API_KEY")
-MAILGUN_DOMAIN = os.getenv("MAILGUN_DOMAIN")
-ALERT_RECIPIENT_EMAIL = os.getenv("ALERT_RECIPIENT_EMAIL", "callcentre.wong@gmail.com")
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+MODEL_NAME = "llama-3.3-70b-versatile"
 
-# Updated Scoring Threshold
-MINIMUM_SCORE_THRESHOLD = 80
+CANDIDATE_PROFILE = """
+[CANDIDATE DOSSIER]: Wong Choong Leong Vincent (Singaporean National)
+- Seniority: 20+ Years Senior APAC Executive Leadership (Director, Head, VP, GM).
+- Core Expertise: APAC Regional Operations, Customer Experience (CX) Leadership, Large-Scale Contact Center Management, Service Governance, P&L & COGS/OPEX Reduction.
+- Domain & Compliance: Medical Devices, Healthcare Operations, QA/QC/CAPA Compliance (Align Technology, Johnson & Johnson), COPC Coordinator, 6 Sigma Green Belt.
+- Technology & Systems: Omnichannel Architecture, CRM/ERP Modernization (Salesforce SFDC, Twilio, Genesys).
+- Strict Exclusion: Entry/Mid-level roles, pure IT Software Development/Engineering, non-leadership individual contributor roles.
+"""
 
-# Roles and Keywords to Exclude locally
-EXCLUDE_KEYWORDS = [
-    "software engineer", "developer", "backend engineer", 
-    "frontend engineer", "fullstack", "data engineer", "devops",
-    "qa engineer", "systems engineer", "cloud architect"
-]
+SYSTEM_PROMPT = f"""
+You are an expert AI Executive Recruiter scoring vacancies for an elite operations leader.
 
-def send_mailgun_email(subject: str, text_body: str):
-    """Sends an email notification via Mailgun API."""
+{CANDIDATE_PROFILE}
+
+Analyze the job title, company, and description. Provide:
+1. A Score (0 to 100) based on alignment with Vincent's executive regional operations, contact center, and compliance profile.
+2. A concise 2-3 sentence assessment explaining why it matches or lacks fit.
+
+Return output strictly in JSON:
+{{
+  "score": <integer 0-100>,
+  "assessment": "<string>"
+}}
+"""
+
+def load_progress():
+    if Path(PROGRESS_FILE_PATH).exists():
+        with open(PROGRESS_FILE_PATH, "r", encoding="utf-8") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return {}
+    return {}
+
+def save_progress(progress_data):
+    with open(PROGRESS_FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(progress_data, f, indent=2, ensure_ascii=False)
+
+def evaluate_single_job(job, job_id):
+    title = job.get("title", "Unknown Title")
+    company = job.get("company", "Unknown Company")
+    job_url = job.get("job_url") or job.get("url") or "#"
+    description = job.get("description", "")
+
+    if not GROQ_API_KEY:
+        raise ValueError("GROQ_API_KEY is not set in secrets.")
+
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    user_content = f"Job Title: {title}\nCompany: {company}\nDescription:\n{description[:2000]}"
+    payload = {
+        "model": MODEL_NAME,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_content}
+        ],
+        "temperature": 0.2,
+        "response_format": {"type": "json_object"}
+    }
+
+    for attempt in range(3):
+        try:
+            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=20)
+            if response.status_code == 429:
+                time.sleep(5 * (attempt + 1))
+                continue
+            response.raise_for_status()
+            res_data = response.json()
+            parsed = json.loads(res_data["choices"][0]["message"]["content"])
+            return job_id, {
+                "title": title,
+                "company": company,
+                "url": job_url,
+                "score": parsed.get("score", 0),
+                "assessment": parsed.get("assessment", "No assessment provided."),
+                "evaluated": True
+            }
+        except Exception as e:
+            if attempt == 2:
+                return job_id, {
+                    "title": title,
+                    "company": company,
+                    "url": job_url,
+                    "score": 0,
+                    "assessment": f"Failed evaluation: {str(e)}",
+                    "evaluated": True
+                }
+            time.sleep(2)
+
+def send_mailgun_digest(top_jobs):
     if not MAILGUN_API_KEY or not MAILGUN_DOMAIN:
-        logging.warning("Mailgun credentials not configured. Skipping email dispatch.")
-        return False
+        print("⚠️ Mailgun API key or Domain missing. Skipping email dispatch.")
+        return
 
-    url = f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages"
+    print(f"📧 Sending daily email digest to {RECIPIENT_EMAIL}...")
+    
+    body = "🚀 Daily AI Job Match Digest\n"
+    body += "Here are your top-scoring executive opportunities evaluated today:\n"
+    body += "=" * 50 + "\n\n"
+
+    for idx, job in enumerate(top_jobs, 1):
+        body += f"{idx}. {job['title']}\n"
+        body += f"Company: {job['company']}\n"
+        body += f"Match Score: {job['score']} / 100\n"
+        body += f"AI Analysis:\n{job['assessment']}\n"
+        body += f"🔗 Direct Application Link:\n{job['url']}\n"
+        body += "=" * 50 + "\n\n"
+
     try:
-        response = requests.post(
-            url,
+        res = requests.post(
+            f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
             auth=("api", MAILGUN_API_KEY),
             data={
-                "from": f"Job Pipeline Bot <mailgun@{MAILGUN_DOMAIN}>",
-                "to": [ALERT_RECIPIENT_EMAIL],
-                "subject": subject,
-                "text": text_body
+                "from": f"AI Job Hunter <mailgun@{MAILGUN_DOMAIN}>",
+                "to": [RECIPIENT_EMAIL],
+                "subject": f"🚀 Daily Executive AI Job Digest ({len(top_jobs)} High Fit Roles)",
+                "text": body
             },
-            timeout=10
+            timeout=15
         )
-        response.raise_for_status()
-        logging.info(f"Mailgun email sent successfully: '{subject}'")
-        return True
+        if res.status_code == 200:
+            print("✅ Email digest successfully delivered via Mailgun!")
+        else:
+            print(f"❌ Mailgun error: {res.status_code} - {res.text}")
     except Exception as e:
-        logging.error(f"Failed to send Mailgun email: {e}")
-        return False
+        print(f"⚠️ Failed to send email via Mailgun: {e}")
 
-def is_title_in_target_scope(job_title: str) -> bool:
-    """Pre-screens job titles locally to preserve LLM API quota."""
-    title_lower = job_title.lower()
-    for kw in EXCLUDE_KEYWORDS:
-        if kw in title_lower:
-            return False
-    return True
+def run_evaluation():
+    progress = load_progress()
+    if not Path(CSV_FILE_PATH).exists():
+        print(f"Error: {CSV_FILE_PATH} not found.")
+        return
 
-def call_groq_with_backoff(prompt_messages, max_retries=5, base_delay=3.0):
-    """
-    Executes Groq API completion with exponential backoff for rate limits (429)
-    and automatic model fallback.
-    """
-    models_to_try = [PRIMARY_MODEL, FALLBACK_MODEL]
+    with open(CSV_FILE_PATH, "r", encoding="utf-8") as f:
+        jobs = list(csv.DictReader(f))
 
-    for model in models_to_try:
-        logging.info(f"Attempting evaluation with model: {model}")
-        for attempt in range(max_retries):
-            try:
-                response = client.chat.completions.create(
-                    model=model,
-                    messages=prompt_messages,
-                    temperature=0.1,
-                    max_tokens=600
-                )
-                return response.choices[0].message.content
+    pending_jobs = []
+    for idx, job in enumerate(jobs):
+        job_id = job.get("job_id") or f"job_{idx}"
+        existing = progress.get(job_id)
+        if not (existing and existing.get("evaluated")):
+            pending_jobs.append((job_id, job))
 
-            except RateLimitError as e:
-                delay = base_delay * (2 ** attempt)
-                logging.warning(
-                    f"Rate limit 429 on '{model}'. Retrying in {delay:.1f}s (Attempt {attempt + 1}/{max_retries})..."
-                )
-                time.sleep(delay)
+    jobs_to_process = pending_jobs[:MAX_JOBS_PER_RUN]
+    
+    if jobs_to_process:
+        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            futures = {executor.submit(evaluate_single_job, job, job_id): job_id for job_id, job in jobs_to_process}
+            for future in as_completed(futures):
+                try:
+                    job_id, result = future.result()
+                    progress[job_id] = result
+                    save_progress(progress)
+                except Exception as e:
+                    print(f"Error evaluating job: {e}")
 
-            except APIError as e:
-                if "429" in str(e):
-                    delay = base_delay * (2 ** attempt)
-                    logging.warning(
-                        f"API Error 429 on '{model}'. Retrying in {delay:.1f}s (Attempt {attempt + 1}/{max_retries})..."
-                    )
-                    time.sleep(delay)
-                else:
-                    logging.error(f"Unrecoverable API Error on '{model}': {e}")
-                    break
+    with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
+        json.dump(progress, f, indent=2, ensure_ascii=False)
 
-        logging.warning(f"Exceeded max retries for model '{model}'. Trying fallback if available...")
+    # Filter top scores (>= 75) for email alert
+    top_matches = [j for j in progress.values() if j.get("score", 0) >= 75]
+    top_matches = sorted(top_matches, key=lambda x: x["score"], reverse=True)[:10]
 
-    raise RuntimeError("All models and retries failed due to API rate limits or errors.")
-
-def evaluate_single_job(job_id: str, job_data: dict) -> dict:
-    """Evaluates an individual job posting against the target candidate profile."""
-    title = job_data.get("title", "")
-    company = job_data.get("company", "")
-
-    if not is_title_in_target_scope(title):
-        logging.info(f"Skipping '{title}' at {company} (Title outside target scope).")
-        return {
-            "title": title,
-            "company": company,
-            "score": 0,
-            "assessment": "Skipped: Title outside target scope.",
-            "evaluated": True
-        }
-
-    system_prompt = (
-        "You are an executive talent acquisition assistant evaluating jobs for a candidate with "
-        "20+ years of experience in Customer Service, Contact Centre Management, Technical Support, "
-        "Service Governance, CRM/ERP Operations, and Operational Excellence in APAC/Singapore.\n\n"
-        "Evaluation Rules:\n"
-        "1. Score from 0 to 100 based on alignment with Customer Service Leadership, Contact Centre Management, "
-        "Operational Excellence, Regional Operations, or Service Delivery leadership roles.\n"
-        "2. Only assign scores of 80 to 100 for strong regional leadership matches (Regional Manager, Head, Executive, or Director levels).\n"
-        "3. Explicitly output the final score in the exact format: 'Score: [number]/100' on the first line."
-    )
-    user_prompt = f"Title: {title}\nCompany: {company}\nDetails: {json.dumps(job_data)}"
-
-    prompt_messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
-    ]
-
-    try:
-        assessment_text = call_groq_with_backoff(prompt_messages)
-        
-        score = 0
-        if "Score:" in assessment_text:
-            try:
-                score_str = assessment_text.split("Score:")[1].split("/")[0].strip()
-                score = int(score_str)
-            except Exception:
-                score = 0
-
-        return {
-            "title": title,
-            "company": company,
-            "score": score,
-            "assessment": assessment_text,
-            "evaluated": True
-        }
-
-    except Exception as e:
-        logging.error(f"Failed to evaluate job {job_id}: {e}")
-        return {
-            "title": title,
-            "company": company,
-            "score": 0,
-            "assessment": f"API Error: {str(e)}",
-            "evaluated": False
-        }
-
-def run_evaluation_pipeline(input_jobs: dict, output_file_path: str = "evaluation_report.json"):
-    """Runs the full evaluation pipeline and dispatches digest/alert emails."""
-    results = {}
-    total_jobs = len(input_jobs)
-    failed_count = 0
-    qualifying_jobs = []
-
-    logging.info(f"Starting pipeline evaluation for {total_jobs} jobs...")
-
-    for idx, (job_id, job_data) in enumerate(input_jobs.items(), 1):
-        logging.info(f"Processing [{idx}/{total_jobs}]: {job_id}")
-        
-        eval_result = evaluate_single_job(job_id, job_data)
-        results[job_id] = eval_result
-
-        if not eval_result.get("evaluated", False):
-            failed_count += 1
-
-        if eval_result.get("score", 0) >= MINIMUM_SCORE_THRESHOLD:
-            qualifying_jobs.append(eval_result)
-
-        time.sleep(1.5)
-
-    # Save final JSON output
-    with open(output_file_path, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
-
-    # Alert Trigger 1: Send System Health Alert if error rate exceeds 20%
-    failure_rate = (failed_count / total_jobs) if total_jobs > 0 else 0
-    if failure_rate > 0.20:
-        alert_msg = (
-            f"WARNING: Executive Job Pipeline completed with high error rate!\n\n"
-            f"Total Jobs Processed: {total_jobs}\n"
-            f"Failed Evaluated Jobs: {failed_count}\n"
-            f"Failure Rate: {failure_rate * 100:.1f}%\n\n"
-            f"Please check your API quota or model status."
-        )
-        send_mailgun_email("⚠️ Pipeline Health Alert: High Evaluation Failure Rate", alert_msg)
-
-    # Alert Trigger 2: Send Email Digest for high matches (80+)
-    if qualifying_jobs:
-        digest_body = f"Found {len(qualifying_jobs)} high-match job opportunities (Score >= {MINIMUM_SCORE_THRESHOLD}):\n\n"
-        for job in qualifying_jobs:
-            digest_body += f"• {job['title']} at {job['company']} (Score: {job['score']}/100)\n"
-            digest_body += f"  Summary: {job['assessment'][:200]}...\n\n"
-        
-        send_mailgun_email(f"🎯 Daily Executive Job Match Digest ({len(qualifying_jobs)} Found)", digest_body)
+    if top_matches:
+        send_mailgun_digest(top_matches)
     else:
-        logging.info(f"No jobs met the minimum score threshold of {MINIMUM_SCORE_THRESHOLD}+ for digest dispatch.")
-
-    logging.info(f"Evaluation pipeline completed. Output saved to {output_file_path}")
-    return results
+        print("ℹ️ No new roles scored 75+ today. Skipping email alert.")
 
 if __name__ == "__main__":
-    input_file = "raw_jobs.json"
-    if os.path.exists(input_file):
-        with open(input_file, "r", encoding="utf-8") as f:
-            raw_jobs = json.load(f)
-        run_evaluation_pipeline(raw_jobs)
-    else:
-        logging.warning(f"No '{input_file}' found. Running dry run check...")
+    run_evaluation()
