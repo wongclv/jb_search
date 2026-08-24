@@ -6,14 +6,16 @@ import requests
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# --- Configuration & Paths ---
+# --- Configuration & File Paths ---
 CSV_FILE_PATH = "scraped_jobs_v3.csv"
 PROGRESS_FILE_PATH = "evaluator_progress.json"
 OUTPUT_REPORT_PATH = "evaluation_report.json"
 
-MAX_JOBS_PER_RUN = 40
-MAX_WORKERS = 4
+# --- Tuned Batch & Concurrency Settings ---
+MAX_JOBS_PER_RUN = 80   # Increased from 40 to clear incoming scrape volume immediately
+MAX_WORKERS = 5        # Parallel Groq threads for fast execution (< 3 mins total)
 
+# --- Environment Secrets & API Specs ---
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
 MAILGUN_DOMAIN = os.environ.get("MAILGUN_DOMAIN")
@@ -22,9 +24,10 @@ RECIPIENT_EMAIL = os.environ.get("RECIPIENT_EMAIL", "callcentre.wong@gmail.com")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL_NAME = "llama-3.3-70b-versatile"
 
+# --- Master Candidate Dossier ---
 CANDIDATE_PROFILE = """
 [CANDIDATE DOSSIER]: Wong Choong Leong Vincent (Singaporean National)
-- Seniority: 20+ Years Senior APAC Executive Leadership (Director, Head, VP, GM).
+- Seniority: 20+ Years Senior APAC Executive Leadership (Director, Head, VP, GM, Chief).
 - Core Expertise: APAC Regional Operations, Customer Experience (CX) Leadership, Large-Scale Contact Center Management, Service Governance, P&L & COGS/OPEX Reduction.
 - Domain & Compliance: Medical Devices, Healthcare Operations, QA/QC/CAPA Compliance (Align Technology, Johnson & Johnson), COPC Coordinator, 6 Sigma Green Belt.
 - Technology & Systems: Omnichannel Architecture, CRM/ERP Modernization (Salesforce SFDC, Twilio, Genesys).
@@ -40,7 +43,7 @@ Analyze the job title, company, and description. Provide:
 1. A Score (0 to 100) based on alignment with Vincent's executive regional operations, contact center, and compliance profile.
 2. A concise 2-3 sentence assessment explaining why it matches or lacks fit.
 
-Return output strictly in JSON:
+Return output strictly in valid JSON format matching this exact structure:
 {{
   "score": <integer 0-100>,
   "assessment": "<string>"
@@ -67,7 +70,7 @@ def evaluate_single_job(job, job_id):
     description = job.get("description", "")
 
     if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY is not set in secrets.")
+        raise ValueError("GROQ_API_KEY environment variable is not set in secrets.")
 
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -116,10 +119,10 @@ def evaluate_single_job(job, job_id):
 
 def send_mailgun_digest(top_jobs):
     if not MAILGUN_API_KEY or not MAILGUN_DOMAIN:
-        print("⚠️ Mailgun API key or Domain missing. Skipping email dispatch.")
+        print("⚠️ Mailgun API key or Domain missing in environment secrets. Skipping email dispatch.")
         return
 
-    print(f"📧 Sending daily email digest to {RECIPIENT_EMAIL}...")
+    print(f"📧 Dispatching Daily Executive Job Alert to {RECIPIENT_EMAIL}...")
     
     body = "🚀 Daily AI Job Match Digest\n"
     body += "Here are your top-scoring executive opportunities evaluated today:\n"
@@ -148,9 +151,9 @@ def send_mailgun_digest(top_jobs):
         if res.status_code == 200:
             print("✅ Email digest successfully delivered via Mailgun!")
         else:
-            print(f"❌ Mailgun error: {res.status_code} - {res.text}")
+            print(f"❌ Mailgun API returned error: {res.status_code} - {res.text}")
     except Exception as e:
-        print(f"⚠️ Failed to send email via Mailgun: {e}")
+        print(f"⚠️ Exception during Mailgun dispatch: {e}")
 
 def run_evaluation():
     progress = load_progress()
@@ -161,6 +164,9 @@ def run_evaluation():
     with open(CSV_FILE_PATH, "r", encoding="utf-8") as f:
         jobs = list(csv.DictReader(f))
 
+    print(f"Loaded {len(jobs)} total scraped jobs from CSV database.")
+
+    # Filter for un-evaluated jobs
     pending_jobs = []
     for idx, job in enumerate(jobs):
         job_id = job.get("job_id") or f"job_{idx}"
@@ -169,7 +175,8 @@ def run_evaluation():
             pending_jobs.append((job_id, job))
 
     jobs_to_process = pending_jobs[:MAX_JOBS_PER_RUN]
-    
+    print(f"Processing {len(jobs_to_process)} jobs in this run using {MAX_WORKERS} parallel threads...")
+
     if jobs_to_process:
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             futures = {executor.submit(evaluate_single_job, job, job_id): job_id for job_id, job in jobs_to_process}
@@ -178,20 +185,21 @@ def run_evaluation():
                     job_id, result = future.result()
                     progress[job_id] = result
                     save_progress(progress)
+                    print(f"Completed: {result['title']} @ {result['company']} (Score: {result['score']})")
                 except Exception as e:
                     print(f"Error evaluating job: {e}")
 
     with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
         json.dump(progress, f, indent=2, ensure_ascii=False)
 
-    # Filter top scores (>= 75) for email alert
+    # Extract high-matching roles (Score >= 75) for email digest
     top_matches = [j for j in progress.values() if j.get("score", 0) >= 75]
     top_matches = sorted(top_matches, key=lambda x: x["score"], reverse=True)[:10]
 
     if top_matches:
         send_mailgun_digest(top_matches)
     else:
-        print("ℹ️ No new roles scored 75+ today. Skipping email alert.")
+        print("ℹ️ No new jobs scored >= 75 today. Skipping email dispatch.")
 
 if __name__ == "__main__":
     run_evaluation()
