@@ -40,5 +40,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add scraped_jobs_v3.csv evaluator_progress.json evaluation_report.json || true
-          git commit -m "auto: update job pipeline database [skip ci]" || true
+          git commit -m "auto: update daily job search results [skip ci]" || true
           git push || true
