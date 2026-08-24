@@ -2,50 +2,44 @@ name: Daily AI Job Hunter Workflow
 
 on:
   schedule:
-    # 06:00 AM SGT is 22:00 UTC (previous day)
+    # 22:00 UTC = 06:00 SGT next morning
     - cron: '0 22 * * *'
   workflow_dispatch:
 
 jobs:
   run-job-hunter:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    permissions:
-      contents: write
 
     steps:
-      - name: Check out repo code
+      - name: Check out Repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Python
+      - name: Set up Python Environment
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Install Dependencies
+      - name: Install System & Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pandas python-jobspy pypdf markdownify requests regex
+          pip install pandas requests python-jobspy
 
-      - name: Run Job Scraper (50k Search Matrix)
-        run: |
-          python scraper_cloud.py
+      - name: Execute Executive Job Scraper
+        run: python scraper_cloud.py
 
-      - name: Execute Parallel LLM Evaluator & Dispatch Email Digest
+      - name: Execute AI Evaluation Engine
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
           RECIPIENT_EMAIL: "callcentre.wong@gmail.com"
-        run: |
-          python evaluator_cloud.py
+        run: python evaluator_cloud.py
 
-      - name: Commit and Push Updated Database
+      - name: Persist Data & Commit Progress Artifacts
         run: |
-          git config --global user.name "Automated Cloud Job Agent"
-          git config --global user.email "jobagent-bot@github.com"
-          git add schedule_tracker.json scraped_jobs_v3.csv evaluation_report.json evaluator_progress.json || true
-          git diff-index --quiet HEAD || git commit -m "Daily job search results updated [skip ci]"
-          git push || echo "No changes to commit."
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add scraped_jobs_v3.csv evaluator_progress.json evaluation_report.json || true
+          git commit -m "auto: update job pipeline database [skip ci]" || true
+          git push || true
