@@ -6,16 +6,13 @@ import requests
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# --- Configuration & File Paths ---
 CSV_FILE_PATH = "scraped_jobs_v3.csv"
 PROGRESS_FILE_PATH = "evaluator_progress.json"
 OUTPUT_REPORT_PATH = "evaluation_report.json"
 
-# --- Tuned Batch & Concurrency Settings ---
-MAX_JOBS_PER_RUN = 80   # Increased from 40 to clear incoming scrape volume immediately
-MAX_WORKERS = 5        # Parallel Groq threads for fast execution (< 3 mins total)
+MAX_JOBS_PER_RUN = 80
+MAX_WORKERS = 5
 
-# --- Environment Secrets & API Specs ---
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
 MAILGUN_DOMAIN = os.environ.get("MAILGUN_DOMAIN")
@@ -24,7 +21,6 @@ RECIPIENT_EMAIL = os.environ.get("RECIPIENT_EMAIL", "callcentre.wong@gmail.com")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL_NAME = "llama-3.3-70b-versatile"
 
-# --- Master Candidate Dossier ---
 CANDIDATE_PROFILE = """
 [CANDIDATE DOSSIER]: Wong Choong Leong Vincent (Singaporean National)
 - Seniority: 20+ Years Senior APAC Executive Leadership (Director, Head, VP, GM, Chief).
@@ -70,7 +66,7 @@ def evaluate_single_job(job, job_id):
     description = job.get("description", "")
 
     if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY environment variable is not set in secrets.")
+        raise ValueError("GROQ_API_KEY environment variable is missing.")
 
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -119,13 +115,13 @@ def evaluate_single_job(job, job_id):
 
 def send_mailgun_digest(top_jobs):
     if not MAILGUN_API_KEY or not MAILGUN_DOMAIN:
-        print("⚠️ Mailgun API key or Domain missing in environment secrets. Skipping email dispatch.")
+        print("⚠️ Mailgun credentials not found. Skipping email dispatch.")
         return
 
-    print(f"📧 Dispatching Daily Executive Job Alert to {RECIPIENT_EMAIL}...")
+    print(f"📧 Sending Executive Job Alert Digest to {RECIPIENT_EMAIL}...")
     
     body = "🚀 Daily AI Job Match Digest\n"
-    body += "Here are your top-scoring executive opportunities evaluated today:\n"
+    body += "Top-scoring executive opportunities evaluated today:\n"
     body += "=" * 50 + "\n\n"
 
     for idx, job in enumerate(top_jobs, 1):
@@ -133,7 +129,7 @@ def send_mailgun_digest(top_jobs):
         body += f"Company: {job['company']}\n"
         body += f"Match Score: {job['score']} / 100\n"
         body += f"AI Analysis:\n{job['assessment']}\n"
-        body += f"🔗 Direct Application Link:\n{job['url']}\n"
+        body += f"🔗 Application Link:\n{job['url']}\n"
         body += "=" * 50 + "\n\n"
 
     try:
@@ -149,9 +145,9 @@ def send_mailgun_digest(top_jobs):
             timeout=15
         )
         if res.status_code == 200:
-            print("✅ Email digest successfully delivered via Mailgun!")
+            print("✅ Email digest delivered via Mailgun!")
         else:
-            print(f"❌ Mailgun API returned error: {res.status_code} - {res.text}")
+            print(f"❌ Mailgun error: {res.status_code} - {res.text}")
     except Exception as e:
         print(f"⚠️ Exception during Mailgun dispatch: {e}")
 
@@ -164,9 +160,6 @@ def run_evaluation():
     with open(CSV_FILE_PATH, "r", encoding="utf-8") as f:
         jobs = list(csv.DictReader(f))
 
-    print(f"Loaded {len(jobs)} total scraped jobs from CSV database.")
-
-    # Filter for un-evaluated jobs
     pending_jobs = []
     for idx, job in enumerate(jobs):
         job_id = job.get("job_id") or f"job_{idx}"
@@ -192,7 +185,6 @@ def run_evaluation():
     with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
         json.dump(progress, f, indent=2, ensure_ascii=False)
 
-    # Extract high-matching roles (Score >= 75) for email digest
     top_matches = [j for j in progress.values() if j.get("score", 0) >= 75]
     top_matches = sorted(top_matches, key=lambda x: x["score"], reverse=True)[:10]
 
