@@ -1342,5 +1342,645 @@
     "score": 0,
     "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
     "evaluated": true
+  },
+  "job_170": {
+    "title": "APAC Head of Non-Bank Financial Institutions, Payments FIG Sales, Managing Director",
+    "company": "JPMorganChase",
+    "url": "https://sg.indeed.com/viewjob?jk=3135310ab720f6d8",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_172": {
+    "title": "Operations Executive",
+    "company": "CraveFX",
+    "url": "https://sg.indeed.com/viewjob?jk=be08baad79c46e2c",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_168": {
+    "title": "Customer Service (Service Quality), Analyst",
+    "company": "AIA Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4402465244",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_171": {
+    "title": "Head, SME Lending Risk, Singapore & ASEAN",
+    "company": "Standard Chartered Bank",
+    "url": "https://sg.indeed.com/viewjob?jk=b04420ee8275ce63",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_169": {
+    "title": "Senior Specialist, Customer Service",
+    "company": "Secretlab",
+    "url": "https://www.linkedin.com/jobs/view/4444338002",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_173": {
+    "title": "Client Onboarding Specialist",
+    "company": "Schroders",
+    "url": "https://sg.indeed.com/viewjob?jk=3704720f81b83439",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_174": {
+    "title": "Senior Lead Engineer (100% Onsite)",
+    "company": "Vertical Institute",
+    "url": "https://sg.indeed.com/viewjob?jk=11b16a08fff7eb00",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_176": {
+    "title": "Executive",
+    "company": "NLB National Library Board",
+    "url": "https://sg.indeed.com/viewjob?jk=c4cacbc65d480d32",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_175": {
+    "title": "Executive (Finance)",
+    "company": "PAS People's Association",
+    "url": "https://sg.indeed.com/viewjob?jk=6de8533a6319d12b",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_177": {
+    "title": "Executive Director, CCIBT F1 Incident Commander",
+    "company": "Wells Fargo",
+    "url": "https://sg.indeed.com/viewjob?jk=a8ffb496fd9c37ce",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_178": {
+    "title": "Lifestyle Director",
+    "company": "Pan Pacific Hotels Group",
+    "url": "https://sg.indeed.com/viewjob?jk=22783ec545ed8588",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_179": {
+    "title": "Regional Sales Director",
+    "company": "CrowdStrike",
+    "url": "https://sg.indeed.com/viewjob?jk=21c4b6f2f8da4774",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_180": {
+    "title": "Senior Accounts Executive",
+    "company": "TH INSURANCE BROKERS PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=625f9eef10d7879b",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_181": {
+    "title": "Accounts Executive",
+    "company": "TH INSURANCE BROKERS PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=dce5c74522ddc579",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_182": {
+    "title": "Finance Manager",
+    "company": "Qvantage Pte Ltd.",
+    "url": "https://sg.indeed.com/viewjob?jk=490ec06bc594ba85",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_184": {
+    "title": "Associate Director, WM Compliance, Singapore",
+    "company": "RBC",
+    "url": "https://sg.indeed.com/viewjob?jk=bd94bad343ce0de4",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_183": {
+    "title": "Account Executive, SME & Growth (Spend)",
+    "company": "Airwallex",
+    "url": "https://sg.indeed.com/viewjob?jk=82a14aa81d0e9523",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_185": {
+    "title": "Marketing Manager, SEA",
+    "company": "",
+    "url": "https://sg.indeed.com/viewjob?jk=9c5d5812affc2a0c",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_186": {
+    "title": "Admin Executive",
+    "company": "",
+    "url": "https://sg.indeed.com/viewjob?jk=d7a7c32fefe3efca",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_187": {
+    "title": "Operation Executive",
+    "company": "POH SENG JEWELLERS PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=d9c8c345980dc76b",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_189": {
+    "title": "SC&E Delivery Senior Lead",
+    "company": "Accenture",
+    "url": "https://sg.indeed.com/viewjob?jk=07bedb3006fbfe52",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_188": {
+    "title": "General Manager",
+    "company": "SWEET NEEM FINE DINING PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=699381d4bfcd38e9",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_191": {
+    "title": "Technology Project Manager",
+    "company": "JLL",
+    "url": "https://sg.indeed.com/viewjob?jk=caf608c35d969fb1",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_190": {
+    "title": "Account Executive, SME & Growth (Spend)",
+    "company": "Airwallex",
+    "url": "https://sg.indeed.com/viewjob?jk=e4d86ee48b961698",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_192": {
+    "title": "Executive Director, Capital Markets",
+    "company": "JLL",
+    "url": "https://sg.indeed.com/viewjob?jk=d7622061a0595657",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_193": {
+    "title": "Regional (Senior) Director, Operations – Asia & Middle East",
+    "company": "Argyll Scott",
+    "url": "https://www.linkedin.com/jobs/view/4443480304",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_194": {
+    "title": "Global Banking and Markets - Operations, Prime Brokerage, Executive Director, Singapore",
+    "company": "Goldman Sachs",
+    "url": "https://www.linkedin.com/jobs/view/4443834573",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_195": {
+    "title": "Head of Business Operations and Sourcing, Trust & Safety",
+    "company": "TikTok",
+    "url": "https://www.linkedin.com/jobs/view/4443760643",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_196": {
+    "title": "Head of APAC Call Services",
+    "company": "AlphaSense",
+    "url": "https://www.linkedin.com/jobs/view/4443933694",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_197": {
+    "title": "Global HR Operations Director - Fintech (PE)",
+    "company": "Frazer Jones",
+    "url": "https://www.linkedin.com/jobs/view/4442916795",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_198": {
+    "title": "Product Operations Manager / Director, Institutional Product",
+    "company": "OKX",
+    "url": "https://www.linkedin.com/jobs/view/4415783194",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_199": {
+    "title": "Senior Manager (Projects)",
+    "company": "STPI",
+    "url": "https://www.linkedin.com/jobs/view/4443119238",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_200": {
+    "title": "Director, Operations",
+    "company": "Aligned Data Centers",
+    "url": "https://www.linkedin.com/jobs/view/4442692324",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_201": {
+    "title": "Head,Operations & Admin (National University 6G Artificial Intelligence Centre- NXAC)(Contract)",
+    "company": "National University Health System",
+    "url": "https://www.linkedin.com/jobs/view/4440415584",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_202": {
+    "title": "Assistant Manager, E-commerce",
+    "company": "Kao Singapore Private Limited",
+    "url": "https://www.linkedin.com/jobs/view/4443310504",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_203": {
+    "title": "Commodities Trade Support – Director (Assistant VP)",
+    "company": "Morgan Stanley",
+    "url": "https://www.linkedin.com/jobs/view/4404256509",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_204": {
+    "title": "Estate Operations Director",
+    "company": "Puffy",
+    "url": "https://www.linkedin.com/jobs/view/4440155667",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_205": {
+    "title": "Leader, Client Operations",
+    "company": "Cisco",
+    "url": "https://www.linkedin.com/jobs/view/4442798895",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_206": {
+    "title": "VP, Integrated Operations Command Centre Lead, Corporate Real Estate Services",
+    "company": "UOB",
+    "url": "https://www.linkedin.com/jobs/view/4373683432",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_207": {
+    "title": "Director, Forensics COE (Applied Science R&D)",
+    "company": "HTX (Home Team Science & Technology Agency)",
+    "url": "https://www.linkedin.com/jobs/view/4440174399",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_208": {
+    "title": "Sr. Director Optical Transceiver Manufacturing",
+    "company": "Lumilens",
+    "url": "https://www.linkedin.com/jobs/view/4425017362",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_209": {
+    "title": "Senior Manager / Director, Operational Strategy Development",
+    "company": "Keppel Ltd.",
+    "url": "https://www.linkedin.com/jobs/view/4411504332",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_210": {
+    "title": "Cluster Operations Manager",
+    "company": "DayOne",
+    "url": "https://www.linkedin.com/jobs/view/4414942904",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_211": {
+    "title": "Director of Operations, SEAA",
+    "company": "Frasers Property Limited",
+    "url": "https://www.linkedin.com/jobs/view/4444926420",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_212": {
+    "title": "Head of Platform & Autonomous Fleet Operations",
+    "company": "Grab",
+    "url": "https://www.linkedin.com/jobs/view/4444323713",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_213": {
+    "title": "Head of Operations (Retail)",
+    "company": "Tri-Cap Consulting Pte. Ltd.",
+    "url": "https://www.linkedin.com/jobs/view/4444313987",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_214": {
+    "title": "Revenue Operations Director, APAC",
+    "company": "AvePoint",
+    "url": "https://www.linkedin.com/jobs/view/4432392863",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_216": {
+    "title": "Executive Director, Quantitative Hedge Fund",
+    "company": "Amethyst Partners",
+    "url": "https://www.linkedin.com/jobs/view/4444063445",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_215": {
+    "title": "VP, Network Quality & Autonomous Operations",
+    "company": "Michael Page",
+    "url": "https://www.linkedin.com/jobs/view/4444450639",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_217": {
+    "title": "Assistant Director, Design Management - Ministry of Foreign Affairs (MFA)",
+    "company": "GovTech Singapore",
+    "url": "https://www.linkedin.com/jobs/view/4444333983",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_218": {
+    "title": "Project Manager, APAC Market Operations",
+    "company": "JPMorganChase",
+    "url": "https://sg.indeed.com/viewjob?jk=e990542ad29f565f",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_219": {
+    "title": "Operation Manager (Construction)",
+    "company": "CGS Construction Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=56a7137d273e362e",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_220": {
+    "title": "Operations Manager",
+    "company": "DREAM TALENTS PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=0928f60d6668186e",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_221": {
+    "title": "Lead, Plant Purchasing Operations Partner",
+    "company": "Entegris",
+    "url": "https://sg.indeed.com/viewjob?jk=c6efe6de240ff61f",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_222": {
+    "title": "Operations Manager",
+    "company": "Big Wine Freaks - Oceanix Pte Ltd",
+    "url": "https://sg.indeed.com/viewjob?jk=07370e521515d5ce",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_223": {
+    "title": "Quality Operations Manager",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=84d8b9eaed31e173",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_224": {
+    "title": "IT Operations Manager",
+    "company": "ALTROCKS TECH PTE. LTD.",
+    "url": "https://sg.indeed.com/viewjob?jk=72b023b2ed062c4b",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_225": {
+    "title": "Commercial Operations & Performance Manager",
+    "company": "Visionary Interior",
+    "url": "https://sg.indeed.com/viewjob?jk=dea697bc94b913c9",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_226": {
+    "title": "Strategy and Operations Principal Lead, APAC YouTube+ Acceleration",
+    "company": "Youtube",
+    "url": "https://sg.indeed.com/viewjob?jk=f31b62aa66314bcd",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_227": {
+    "title": "AVP, Operations Planning - Operation Resilience and Outsourcing Management",
+    "company": "Sumitomo Group",
+    "url": "https://sg.indeed.com/viewjob?jk=891878328fd7af19",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_228": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=5a3267279ddd8063",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_229": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=25c82e4b5dfd01ef",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_230": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=da2e6d5fedcacdce",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_231": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=21a4b939b1b08172",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_232": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=68664fb6a2d34bb0",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_233": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=54c5f926db7c1f46",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_234": {
+    "title": "Freight Operations Supervisor (MNX)",
+    "company": "UPS",
+    "url": "https://sg.indeed.com/viewjob?jk=1d8c6774ce7c53dd",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_235": {
+    "title": "Global Banking and Markets - Operations, Prime Brokerage, Executive Director, Singapore",
+    "company": "Goldman Sachs",
+    "url": "https://sg.indeed.com/viewjob?jk=dbee1d77a188ab5c",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_236": {
+    "title": "VP, Markets Support Specialist (Collateral Operations), Global Markets Operations",
+    "company": "Bank of America",
+    "url": "https://sg.indeed.com/viewjob?jk=4bfec36631c2c7e0",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_237": {
+    "title": "VP, Client Servicing Specialist (ETD), Global Markets Operations",
+    "company": "Bank of America",
+    "url": "https://sg.indeed.com/viewjob?jk=5dfc41bdf65ff400",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_238": {
+    "title": "[LPS] AWS Operations Lead - ITIL Certified",
+    "company": "Lenovo",
+    "url": "https://sg.indeed.com/viewjob?jk=6853ae3f963b113b",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_239": {
+    "title": "Regional Operations & Distribution Assistant Manager (Accessories)",
+    "company": "Richemont",
+    "url": "https://sg.indeed.com/viewjob?jk=ad76b37157cce3d1",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_240": {
+    "title": "Manager, Vessel Operations",
+    "company": "POSH",
+    "url": "https://sg.indeed.com/viewjob?jk=b05fb8f3d43b4a9f",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_241": {
+    "title": "Senior Operations Manager",
+    "company": "Air Liquide",
+    "url": "https://sg.indeed.com/viewjob?jk=663ba11184c53fc8",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_242": {
+    "title": "Supply Chain Manager",
+    "company": "JSIT for WST (Wholesale Trade) by Singapore Business Federation (SBF)",
+    "url": "https://www.linkedin.com/jobs/view/4443839101",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_243": {
+    "title": "Manufacturing Manager",
+    "company": "PepsiCo",
+    "url": "https://www.linkedin.com/jobs/view/4412871558",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_244": {
+    "title": "Supply Chain Manager",
+    "company": "Travel with Passion",
+    "url": "https://www.linkedin.com/jobs/view/4444267418",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_245": {
+    "title": "HR Operations Manager",
+    "company": "OKX",
+    "url": "https://www.linkedin.com/jobs/view/4432355032",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_246": {
+    "title": "Operations Manager (Site: NTU)",
+    "company": "Certis",
+    "url": "https://www.linkedin.com/jobs/view/4443791376",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
+  },
+  "job_247": {
+    "title": "Warehouse Manager",
+    "company": "Hyve Solutions",
+    "url": "https://www.linkedin.com/jobs/view/4431637956",
+    "score": 0,
+    "assessment": "Failed evaluation: 404 Client Error: Not Found for url: https://api.groq.com/openai/v1/chat/completions",
+    "evaluated": true
   }
 }
