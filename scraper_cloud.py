@@ -6,19 +6,16 @@ import config
 def run_scraper():
     print("🚀 Executing Singapore Executive Job Scraper (LinkedIn, Indeed, Glassdoor, Google)...")
     
-    # Expanded query to catch Resolution, Client Service, CX, and AP/SEA variations
+    # Catch Resolution, Client Service, Operations, CX, and regional aliases
     base_query = "(Operations OR 'Customer Experience' OR 'Customer Resolution' OR 'Client Service' OR 'Contact Center' OR Service OR Compliance) (Director OR Head OR Lead OR Manager OR VP OR Regional)"
     
     all_jobs = []
-    
-    # Build complete company target list across Tiers 1-6
     target_companies = []
     for tier, comps in config.TIER_COMPANIES.items():
         target_companies.extend(comps)
         
-    print(f"📡 Sweeping target companies across 4 major job boards (including Google)...")
+    print(f"📡 Sweeping target enterprise matrix across 4 major job boards...")
     
-    # Process in targeted company chunks to maximize coverage
     chunk_size = 15
     for i in range(0, len(target_companies), chunk_size):
         chunk = target_companies[i:i + chunk_size]
@@ -27,7 +24,7 @@ def run_scraper():
         
         try:
             jobs = scrape_jobs(
-                site_name=["linkedin", "indeed", "glassdoor", "google"],  # Explicitly included google
+                site_name=["linkedin", "indeed", "glassdoor", "google"],
                 search_term=base_query,
                 google_search_term=google_query,
                 location="Singapore",
@@ -47,7 +44,6 @@ def run_scraper():
     combined_df = pd.concat(all_jobs, ignore_index=True)
     combined_df.drop_duplicates(subset=['job_url'], inplace=True)
 
-    # Clean non-executive roles using config definitions
     def is_executive_fit(title):
         t = str(title).lower()
         if any(ex in t for ex in ["intern", "junior", "trainee", "entry level"]):
@@ -66,7 +62,7 @@ def run_scraper():
     else:
         combined_df.to_csv(csv_file, index=False)
 
-    print(f"💾 Database updated successfully: {csv_file}")
+    print(f"💾 Master database updated successfully: {csv_file}")
 
 if __name__ == "__main__":
     run_scraper()
