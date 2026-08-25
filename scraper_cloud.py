@@ -1,67 +1,53 @@
-import os
-import pandas as pd
+import json
+import logging
 from jobspy import scrape_jobs
-import config
+import pandas as pd
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+# Wide-Net Executive Boolean Query Matrix
+SEARCH_QUERIES = [
+    '(Director OR Head OR VP OR Regional OR Lead OR Manager OR Senior) AND ("Customer Experience" OR CX OR "Client Service" OR "Customer Service")',
+    '(Director OR Head OR VP OR Regional OR Lead OR Manager OR Senior) AND ("Contact Center" OR "Call Center" OR "Service Delivery" OR "Customer Resolution")',
+    '(Director OR Head OR VP OR Regional OR Lead OR Manager OR Senior) AND (Operations OR Quality OR Compliance OR Governance OR CAPA)'
+]
 
 def run_scraper():
-    print("🚀 Executing Industry-Agnostic Wide Net Singapore Executive Job Scraper...")
-    
-    # Wide Boolean Matrix optimized to catch all variations of CX, Operations, Service & Resolution Leadership
-    search_queries = [
-        "('Customer Resolution' OR 'Client Service' OR 'Customer Experience' OR CX OR 'Customer Service' OR Customer) (Director OR Head OR VP OR Regional OR Lead OR Senior OR Manager)",
-        "(Operations OR 'Operational Excellence' OR 'Service Delivery' OR Service OR 'Contact Center') (Director OR Head OR VP OR Manager OR Regional OR Senior)",
-        "(Compliance OR Quality OR CAPA OR Governance OR Resolution) (Director OR Head OR VP OR Regional OR Manager OR Senior)"
-    ]
-    
     all_jobs = []
     
-    for idx, query in enumerate(search_queries, 1):
-        print(f"🔍 [Query {idx}/{len(search_queries)}] Sweeping Singapore market: {query}")
+    for query in SEARCH_QUERIES:
+        logging.info(f"Executing Query: {query}")
         try:
             jobs = scrape_jobs(
                 site_name=["linkedin", "indeed", "glassdoor", "google"],
-                search_term=f"{query} Singapore",
-                google_search_term=f"{query} Singapore",
+                search_term=query,
                 location="Singapore",
                 results_wanted=100,
-                hours_old=168,
-                country_indeed='singapore'
+                hours_old=168,  # Posts from past 7 days
+                country_code_indeed='singapore'
             )
             if not jobs.empty:
-                print(f"   --> Found {len(jobs)} raw listings")
                 all_jobs.append(jobs)
+                logging.info(f"Retrieved {len(jobs)} raw listings.")
         except Exception as e:
-            print(f"⚠️ Search note for query {idx}: {e}")
+            logging.error(f"Error scraping query '{query}': {e}")
 
     if not all_jobs:
-        print("📭 No new listings retrieved during this sweep.")
+        logging.warning("No jobs retrieved across any query.")
+        with open("scraped_jobs.json", "w") as f:
+            json.dump([], f)
         return
 
-    # Combine results and remove exact duplicate job URLs across platforms
+    # Combine and deduplicate listings
     combined_df = pd.concat(all_jobs, ignore_index=True)
-    combined_df.drop_duplicates(subset=['job_url'], inplace=True)
+    combined_df.drop_duplicates(subset=["job_url"], inplace=True)
+    combined_df = combined_df.fillna("")
+    
+    records = combined_df.to_dict(orient="records")
+    logging.info(f"Total unique roles extracted after deduplication: {len(records)}")
 
-    # Filter out junior/entry level titles while retaining executive leadership roles
-    def is_executive_fit(title):
-        t = str(title).lower()
-        if any(ex in t for ex in ["intern", "junior", "trainee", "entry level", "associate manager"]):
-            return False
-        return any(kw in t for kw in config.ALL_VALID_KEYWORDS)
-
-    if 'title' in combined_df.columns:
-        combined_df = combined_df[combined_df['title'].apply(is_executive_fit)]
-
-    # Append to master dataset and ensure persistent deduplication
-    csv_file = "scraped_jobs_v3.csv"
-    if os.path.exists(csv_file):
-        existing_df = pd.read_csv(csv_file)
-        updated_df = pd.concat([existing_df, combined_df], ignore_index=True)
-        updated_df.drop_duplicates(subset=['job_url'], inplace=True)
-        updated_df.to_csv(csv_file, index=False)
-        print(f"💾 Master database updated. Total unique jobs stored: {len(updated_df)}")
-    else:
-        combined_df.to_csv(csv_file, index=False)
-        print(f"💾 Master database created with {len(combined_df)} executive jobs.")
+    with open("scraped_jobs.json", "w") as f:
+        json.dump(records, f, indent=2, default=str)
 
 if __name__ == "__main__":
     run_scraper()
