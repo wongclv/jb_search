@@ -1,197 +1,204 @@
 import os
+import re
 import json
-import csv
-import time
+import logging
 import requests
-from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from groq import Groq
 
-CSV_FILE_PATH = "scraped_jobs_v3.csv"
-PROGRESS_FILE_PATH = "evaluator_progress.json"
-OUTPUT_REPORT_PATH = "evaluation_report.json"
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-MAX_JOBS_PER_RUN = 80
-MAX_WORKERS = 5
+# Updated Executive Dossier & Exclusion Safeguards
+MASTER_DOSSIER = """
+Candidate: Vincent Wong Choong Leong
+Target Seniority: Senior Regional Leadership (Director, Head, VP, Regional Lead, Senior Operations Manager).
+Core Domain: 20+ years of APAC regional leadership in Customer Experience (CX), Contact Center Operations, Service Delivery, Quality Governance, BPO Management, SLA & CAPA.
+Target Sectors: Enterprise Tech, MNCs, FinTech, Logistics, Healthcare, Aerospace, Luxury, Public Sector.
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
-MAILGUN_DOMAIN = os.environ.get("MAILGUN_DOMAIN")
-RECIPIENT_EMAIL = os.environ.get("RECIPIENT_EMAIL", "callcentre.wong@gmail.com")
-
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL_NAME = "llama-3.3-70b-versatile"
-
-CANDIDATE_PROFILE = """
-[CANDIDATE DOSSIER]: Wong Choong Leong Vincent (Singaporean National)
-- Seniority: 20+ Years Senior APAC Executive Leadership (Director, Head, VP, GM, Chief).
-- Core Expertise: APAC Regional Operations, Customer Experience (CX) Leadership, Large-Scale Contact Center Management, Service Governance, P&L & COGS/OPEX Reduction.
-- Domain & Compliance: Medical Devices, Healthcare Operations, QA/QC/CAPA Compliance (Align Technology, Johnson & Johnson), COPC Coordinator, 6 Sigma Green Belt.
-- Technology & Systems: Omnichannel Architecture, CRM/ERP Modernization (Salesforce SFDC, Twilio, Genesys).
-- Strict Exclusion: Entry/Mid-level roles, pure IT Software Development/Engineering, non-leadership individual contributor roles.
+CRITICAL EXCLUSIONS & DISQUALIFIERS:
+- REJECT Mid-level/Junior roles (e.g., Deputy Manager, Assistant Manager, Specialist, Junior Product Manager).
+- REJECT Pure Software Engineering / Network / SRE Infrastructure / IT Support roles.
+- REJECT Physical Product Development / FMCG / F&B R&D roles (e.g., Tea/Beverage Product Development).
+- Roles MUST be centered on CX, Operations Leadership, or Contact Center / Service Delivery.
 """
 
-SYSTEM_PROMPT = f"""
-You are an expert AI Executive Recruiter scoring vacancies for an elite operations leader.
+CACHE_FILE = "evaluator_progress.json"
 
-{CANDIDATE_PROFILE}
+def load_cache():
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r") as f:
+                return set(json.load(f))
+        except Exception:
+            return set()
+    return set()
 
-Analyze the job title, company, and description. Provide:
-1. A Score (0 to 100) based on alignment with Vincent's executive regional operations, contact center, and compliance profile.
-2. A concise 2-3 sentence assessment explaining why it matches or lacks fit.
+def save_cache(cache):
+    with open(CACHE_FILE, "w") as f:
+        json.dump(list(cache), f, indent=2)
 
-Return output strictly in valid JSON format matching this exact structure:
+def clean_and_parse_json(raw_text: str) -> dict:
+    """Safely extracts JSON from LLM outputs."""
+    try:
+        return json.loads(raw_text)
+    except Exception:
+        json_match = re.search(r'\{.*\}', raw_text, re.DOTALL)
+        if json_match:
+            try:
+                return json.loads(json_match.group(0))
+            except Exception:
+                pass
+        return {
+            "match_score": 0,
+            "fit_summary": "Failed JSON validation.",
+            "key_alignments": []
+        }
+
+def evaluate_job(client, job):
+    prompt = f"""
+You are an executive talent evaluator evaluating job opportunities against the candidate profile.
+
+Candidate Profile & Constraints:
+{MASTER_DOSSIER}
+
+Job Posting Details:
+- Title: {job.get('title')}
+- Company: {job.get('company')}
+- Location: {job.get('location')}
+- Description: {str(job.get('description'))[:3000]}
+
+SCORING RULES:
+1. If the job title is below Senior Management level (e.g. "Deputy Manager", "Assistant Manager", "Specialist"), CAP the match_score at 30.
+2. If the role is pure IT/Software/SRE engineering or physical product R&D (e.g. Tea/F&B product development), CAP the match_score at 30.
+3. Assign match_score >= 75 ONLY if the role aligns directly with Customer Experience (CX), Contact Center Operations, Regional Service Delivery, or Operational Leadership.
+
+Respond strictly in valid JSON with no markdown formatting:
 {{
-  "score": <integer 0-100>,
-  "assessment": "<string>"
+  "match_score": <integer 0 to 100>,
+  "fit_summary": "<2-3 sentence strict evaluation of executive fit>",
+  "key_alignments": ["<alignment 1>", "<alignment 2>", "<alignment 3>"]
 }}
 """
-
-def load_progress():
-    if Path(PROGRESS_FILE_PATH).exists():
-        with open(PROGRESS_FILE_PATH, "r", encoding="utf-8") as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return {}
-    return {}
-
-def save_progress(progress_data):
-    with open(PROGRESS_FILE_PATH, "w", encoding="utf-8") as f:
-        json.dump(progress_data, f, indent=2, ensure_ascii=False)
-
-def evaluate_single_job(job, job_id):
-    title = job.get("title", "Unknown Title")
-    company = job.get("company", "Unknown Company")
-    job_url = job.get("job_url") or job.get("url") or "#"
-    description = job.get("description", "")
-
-    if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY environment variable is missing.")
-
-    headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    user_content = f"Job Title: {title}\nCompany: {company}\nDescription:\n{description[:2000]}"
-    payload = {
-        "model": MODEL_NAME,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_content}
-        ],
-        "temperature": 0.2,
-        "response_format": {"type": "json_object"}
-    }
-
-    for attempt in range(3):
-        try:
-            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=20)
-            if response.status_code == 429:
-                time.sleep(5 * (attempt + 1))
-                continue
-            response.raise_for_status()
-            res_data = response.json()
-            parsed = json.loads(res_data["choices"][0]["message"]["content"])
-            return job_id, {
-                "title": title,
-                "company": company,
-                "url": job_url,
-                "score": parsed.get("score", 0),
-                "assessment": parsed.get("assessment", "No assessment provided."),
-                "evaluated": True
-            }
-        except Exception as e:
-            if attempt == 2:
-                return job_id, {
-                    "title": title,
-                    "company": company,
-                    "url": job_url,
-                    "score": 0,
-                    "assessment": f"Failed evaluation: {str(e)}",
-                    "evaluated": True
-                }
-            time.sleep(2)
-
-def send_mailgun_digest(top_jobs):
-    if not MAILGUN_API_KEY or not MAILGUN_DOMAIN:
-        print("⚠️ Mailgun credentials not found. Skipping email dispatch.")
-        return
-
-    print(f"📧 Sending Executive Job Alert Digest to {RECIPIENT_EMAIL}...")
-    
-    body = "🚀 Daily AI Job Match Digest\n"
-    body += "Top-scoring executive opportunities evaluated today:\n"
-    body += "=" * 50 + "\n\n"
-
-    for idx, job in enumerate(top_jobs, 1):
-        body += f"{idx}. {job['title']}\n"
-        body += f"Company: {job['company']}\n"
-        body += f"Match Score: {job['score']} / 100\n"
-        body += f"AI Analysis:\n{job['assessment']}\n"
-        body += f"🔗 Application Link:\n{job['url']}\n"
-        body += "=" * 50 + "\n\n"
-
     try:
-        res = requests.post(
-            f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
-            auth=("api", MAILGUN_API_KEY),
-            data={
-                "from": f"AI Job Hunter <mailgun@{MAILGUN_DOMAIN}>",
-                "to": [RECIPIENT_EMAIL],
-                "subject": f"🚀 Daily Executive AI Job Digest ({len(top_jobs)} High Fit Roles)",
-                "text": body
-            },
-            timeout=15
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            max_tokens=500
         )
-        if res.status_code == 200:
-            print("✅ Email digest delivered via Mailgun!")
-        else:
-            print(f"❌ Mailgun error: {res.status_code} - {res.text}")
+        content = response.choices[0].message.content.strip()
+        if content.startswith("```"):
+            content = content.split("```")[1].strip()
+            if content.startswith("json"):
+                content = content[4:].strip()
+        return clean_and_parse_json(content)
     except Exception as e:
-        print(f"⚠️ Exception during Mailgun dispatch: {e}")
+        logging.error(f"Error evaluating job {job.get('job_url')}: {e}")
+        return None
 
-def run_evaluation():
-    progress = load_progress()
-    if not Path(CSV_FILE_PATH).exists():
-        print(f"Error: {CSV_FILE_PATH} not found.")
+def send_email_digest(matched_jobs):
+    api_key = os.getenv("MAILGUN_API_KEY")
+    domain = os.getenv("MAILGUN_DOMAIN")
+    recipient = os.getenv("RECIPIENT_EMAIL")
+
+    if not all([api_key, domain, recipient]):
+        logging.error("Mailgun environment variables missing. Skipping email dispatch.")
         return
 
-    with open(CSV_FILE_PATH, "r", encoding="utf-8") as f:
-        jobs = list(csv.DictReader(f))
+    cards_html = ""
+    for item in matched_jobs:
+        job = item['job']
+        eval_data = item['eval']
+        
+        alignments_list = "".join([f"<li>{align}</li>" for align in eval_data.get('key_alignments', [])])
+        
+        cards_html += f"""
+        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 20px; background-color: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                <div>
+                    <h2 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 4px 0;">{job.get('title')}</h2>
+                    <p style="font-size: 14px; font-weight: 500; color: #64748b; margin: 0;">{job.get('company')} • {job.get('location')}</p>
+                </div>
+                <div style="background: #dcfce7; color: #166534; font-weight: 700; font-size: 13px; padding: 4px 10px; border-radius: 9999px;">
+                    {eval_data.get('match_score')}% Match
+                </div>
+            </div>
+            <p style="font-size: 13.5px; line-height: 1.5; color: #334155; margin-bottom: 12px;">
+                <strong>Fit Summary:</strong> {eval_data.get('fit_summary')}
+            </p>
+            <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #475569; font-size: 13px;">
+                {alignments_list}
+            </ul>
+            <a href="{job.get('job_url')}" style="display: inline-block; background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 4px;" target="_blank">View Listing Position</a>
+        </div>
+        """
 
-    pending_jobs = []
-    for idx, job in enumerate(jobs):
-        job_id = job.get("job_id") or f"job_{idx}"
-        existing = progress.get(job_id)
-        if not (existing and existing.get("evaluated")):
-            pending_jobs.append((job_id, job))
+    full_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f9; color: #333333; margin: 0; padding: 20px;">
+        <div style="max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <div style="background: #0f172a; color: #ffffff; padding: 24px; text-align: left;">
+                <h1 style="margin: 0; font-size: 20px; font-weight: 600;">🎯 Executive AI Job Digest ({len(matched_jobs)} High Fit Roles)</h1>
+                <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px;">Singapore Executive Search Pipeline | Autonomous Daily Sweep</p>
+            </div>
+            <div style="padding: 24px;">
+                {cards_html}
+            </div>
+            <div style="background: #f8fafc; padding: 16px 24px; font-size: 11px; color: #94a3b8; text-align: center; border-top: 1px solid #e2e8f0;">
+                Automated pipeline execution via GitHub Actions | Powered by Groq AI & Mailgun API
+            </div>
+        </div>
+    </body>
+    </html>
+    """
 
-    jobs_to_process = pending_jobs[:MAX_JOBS_PER_RUN]
-    print(f"Processing {len(jobs_to_process)} jobs in this run using {MAX_WORKERS} parallel threads...")
+    response = requests.post(
+        f"https://api.mailgun.net/v3/{domain}/messages",
+        auth=("api", api_key),
+        data={
+            "from": f"AI Job Hunter <mailgun@{domain}>",
+            "to": [recipient],
+            "subject": f"🎯 Executive AI Job Digest: {len(matched_jobs)} Strategic Matches Found",
+            "html": full_html
+        }
+    )
+    logging.info(f"Mailgun dispatch status: {response.status_code}")
 
-    if jobs_to_process:
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            futures = {executor.submit(evaluate_single_job, job, job_id): job_id for job_id, job in jobs_to_process}
-            for future in as_completed(futures):
-                try:
-                    job_id, result = future.result()
-                    progress[job_id] = result
-                    save_progress(progress)
-                    print(f"Completed: {result['title']} @ {result['company']} (Score: {result['score']})")
-                except Exception as e:
-                    print(f"Error evaluating job: {e}")
+def main():
+    if not os.path.exists("scraped_jobs.json"):
+        logging.info("No scraped_jobs.json file found.")
+        return
 
-    with open(OUTPUT_REPORT_PATH, "w", encoding="utf-8") as f:
-        json.dump(progress, f, indent=2, ensure_ascii=False)
+    with open("scraped_jobs.json", "r") as f:
+        scraped_jobs = json.load(f)
 
-    top_matches = [j for j in progress.values() if j.get("score", 0) >= 75]
-    top_matches = sorted(top_matches, key=lambda x: x["score"], reverse=True)[:10]
+    if not scraped_jobs:
+        logging.info("No scraped jobs to process.")
+        return
 
-    if top_matches:
-        send_mailgun_digest(top_matches)
-    else:
-        print("ℹ️ No new jobs scored >= 75 today. Skipping email dispatch.")
+    cache = load_cache()
+    groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    high_matches = []
+
+    for job in scraped_jobs:
+        job_id = job.get("job_url") or f"{job.get('title')}_{job.get('company')}"
+        if job_id in cache:
+            continue
+
+        eval_result = evaluate_job(groq_client, job)
+        cache.add(job_id)
+
+        if eval_result and eval_result.get("match_score", 0) >= 75:
+            high_matches.append({"job": job, "eval": eval_result})
+
+    save_cache(cache)
+    logging.info(f"Evaluated {len(scraped_jobs)} roles. Found {len(high_matches)} high-match roles (>= 75%).")
+
+    if high_matches:
+        send_email_digest(high_matches)
 
 if __name__ == "__main__":
-    run_evaluation()
+    main()
