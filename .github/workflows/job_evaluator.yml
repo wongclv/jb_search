@@ -6,19 +6,16 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch: # Enables manual execution from the Actions tab
 
-env:
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
-
 jobs:
   evaluate-jobs:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
 
@@ -36,8 +33,16 @@ jobs:
         run: |
           python evaluator_cloud.py
 
+      - name: Commit Updated Evaluation Progress Cache
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add evaluator_progress.json evaluation_report.json || true
+          git commit -m "auto: update evaluation cache [skip ci]" || true
+          git push || true
+
       - name: Upload Evaluation Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: evaluation-report
