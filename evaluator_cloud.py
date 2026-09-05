@@ -18,7 +18,7 @@ Location: Singapore
 """
 
 CACHE_FILE = "evaluator_progress.json"
-GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_MODEL = "llama-3.1-8b-instant"
 
 def load_cache():
     if os.path.exists(CACHE_FILE):
