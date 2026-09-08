@@ -3,6 +3,7 @@ import json
 import logging
 import requests
 import re
+import time
 from groq import Groq
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -18,7 +19,7 @@ Location: Singapore
 """
 
 CACHE_FILE = "evaluator_progress.json"
-GROQ_MODEL = "llama-3.1-8b-instant"
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
 def load_cache():
     if os.path.exists(CACHE_FILE):
@@ -53,11 +54,30 @@ def clean_and_parse_json(raw_text: str) -> dict:
                 return json.loads(json_match.group(0))
             except json.JSONDecodeError:
                 pass
-        return {
-            "match_score": 0,
-            "fit_summary": "Parsing Error: LLM response failed JSON validation.",
-            "key_alignments": []
-        }
+        return None
+
+def call_groq_with_retry(client, prompt, max_retries=5, initial_delay=3):
+    """Calls Groq API with exponential backoff retries for rate limits (429)."""
+    delay = initial_delay
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.2,
+                max_tokens=500
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            err_msg = str(e)
+            if "429" in err_msg or "rate_limit" in err_msg.lower():
+                logging.warning(f"[429 Rate Limit] Retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
+                time.sleep(delay)
+                delay *= 2  # Exponential backoff
+            else:
+                logging.error(f"Groq API Error: {err_msg}")
+                raise e
+    raise Exception("Max retries exceeded for Groq API due to Rate Limits.")
 
 def evaluate_job(client, job):
     title = job.get("title", "Unknown Title")
@@ -84,13 +104,7 @@ Respond ONLY in valid JSON with no markdown block wrappers, adhering strictly to
 }}
 """
     try:
-        response = client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
-            max_tokens=500
-        )
-        raw_content = response.choices[0].message.content
+        raw_content = call_groq_with_retry(client, prompt)
         return clean_and_parse_json(raw_content)
     except Exception as e:
         logging.error(f"Error evaluating job '{title}' at '{company}': {e}")
@@ -217,10 +231,14 @@ def main():
             continue
 
         eval_result = evaluate_job(groq_client, job)
-        cache.add(job_id)
-
-        if eval_result and eval_result.get("match_score", 0) >= 75:
-            high_matches.append({"job": job, "eval": eval_result})
+        
+        # ONLY add to cache if evaluation succeeds
+        if eval_result is not None:
+            cache.add(job_id)
+            if eval_result.get("match_score", 0) >= 75:
+                high_matches.append({"job": job, "eval": eval_result})
+        else:
+            logging.warning(f"Skipping cache entry for {job_id} due to processing failure.")
 
     save_cache(cache)
     logging.info(f"Processed {len(scraped_jobs)} roles. Found {len(high_matches)} matches >= 75%.")
