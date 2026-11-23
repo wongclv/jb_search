@@ -25,6 +25,7 @@ Location: Singapore (Singaporean; fluent in English, Mandarin/Chinese, and Canto
 
 CACHE_FILE = "evaluator_progress.json"
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
+MAX_EVALS_PER_RUN = int(os.getenv("MAX_EVALS_PER_RUN", "40"))
 
 
 def load_cache():
@@ -95,7 +96,7 @@ def evaluate_job(client, job):
     title = job.get("title", "Unknown Title")
     company = job.get("company", "Unknown Company")
     location = job.get("location", "Singapore")
-    description = str(job.get("description", ""))[:3000]
+    description = str(job.get("description", ""))[:1800]
 
     prompt = f"""
 You are an executive career recruiter. Evaluate the following job posting against the candidate dossier.
@@ -203,7 +204,7 @@ def send_email_digest(matched_jobs):
         url,
         auth=("api", api_key),
         data={
-            "from": f"AI Job Hunter <mailgun@{domain}>",
+            "from": f"JB Search Digest <mailgun@{domain}>",
             "to": [recipient],
             "subject": f"🎯 Daily Executive AI Job Digest ({len(matched_jobs)} Strategic Matches)",
             "html": html_content,
@@ -241,8 +242,13 @@ def main():
 
     groq_client = Groq(api_key=groq_api_key)
     high_matches = []
+    evaluated_count = 0
 
     for job in scraped_jobs:
+        if evaluated_count >= MAX_EVALS_PER_RUN:
+            logging.info(f"Reached batch cap of {MAX_EVALS_PER_RUN} evaluations. Saving progress and exiting loop.")
+            break
+
         job_url = job.get("job_url") or job.get("url") or job.get("link")
         job_id = job_url if job_url else f"{job.get('title')}_{job.get('company')}"
 
@@ -250,6 +256,7 @@ def main():
             continue
 
         eval_result = evaluate_job(groq_client, job)
+        evaluated_count += 1
 
         # ONLY add to cache if evaluation succeeds
         if eval_result is not None:
@@ -262,12 +269,14 @@ def main():
         time.sleep(5)
 
     save_cache(cache)
-    logging.info(f"Processed {len(scraped_jobs)} roles. Found {len(high_matches)} matches >= 75%.")
+    logging.info(
+        f"Evaluated {evaluated_count} new roles (out of {len(scraped_jobs)} total). Found {len(high_matches)} matches >= 75%."
+    )
 
     if high_matches:
         send_email_digest(high_matches)
     else:
-        logging.info("No new high-scoring matches found today.")
+        logging.info("No new high-scoring matches found in this batch.")
 
 
 if __name__ == "__main__":
