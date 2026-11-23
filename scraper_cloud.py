@@ -9,6 +9,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 SEARCH_QUERIES = [
     "Director Customer Experience",
+    "Head of Customer Experience",
+    "Customer Experience Lead",
     "Regional Director Customer Service",
     "Head of Customer Service",
     "Head of Customer Care",
@@ -19,9 +21,14 @@ SEARCH_QUERIES = [
     "Head of Service Delivery",
     "Director Customer Success",
     "Director Customer Advocacy",
+    "VP Operations",
+    "VP Customer Experience",
+    "VP Customer Service",
     "Operations Director",
     "Regional Operations Director",
     "Head of Operations",
+    "General Manager Operations",
+    "Operations Lead",
     "Director Quality Compliance",
     "Head of Quality Governance",
     "APAC Customer Operations",
