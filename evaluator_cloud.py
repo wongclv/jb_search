@@ -259,7 +259,7 @@ def main():
         else:
             logging.warning(f"Skipping cache entry for {job_id} due to processing failure.")
 
-        time.sleep(1.5)
+        time.sleep(5)
 
     save_cache(cache)
     logging.info(f"Processed {len(scraped_jobs)} roles. Found {len(high_matches)} matches >= 75%.")
