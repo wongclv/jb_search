@@ -10,12 +10,17 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 # Master Dossier background context
 MASTER_DOSSIER = """
-Candidate: Vincent Wong Choong Leong
-Target Level: Senior Regional / Director / Head of Operations & CX
-Experience: 20+ years executive leadership across APAC markets (Align Technology, LifeScan/J&J, Singtel).
-Core Domains: Contact Center Operations, Customer Experience (CX), Service Delivery, Regional P&L, Quality Governance, CAPA, SLA Management.
-Technical & Transformation: Salesforce, SAP, Generative AI implementation, Digital Transformation, Vendor Management.
-Location: Singapore
+Candidate: Wong Choong Leong Vincent (Vincent Wong)
+Target Level: Senior Regional / Director / Head of Operations, Customer Experience (CX) & Client/Customer Care
+Experience: 20+ years of leadership in Customer Service, Contact Centre, Client/Account Management, and Regional Operations across APAC markets (Invisalign / Align Technology, LifeScan / Johnson & Johnson Medical Asia Pacific, Singtel, Ogilvy / Teledirect, Iomega).
+Core Domains: Contact Centre & Omnichannel Operations, Customer Experience (CX), Client Management & Customer Relationship, Service Delivery, Regional P&L & Budget Ownership (OPEX & COGS), Quality Governance & CAPA, SLA/KPI Management, Workforce Management (WFM & Erlang), Vendor/BPO Governance, Patient & Customer Engagement.
+Technical & Digital Transformation: Salesforce CRM (SFDC), SAP, MS Dynamics CRM, Zendesk, Twilio Flex, Generative AI & Agentic AI for customer operations, SQL, Power BI, MarTech & campaign analytics.
+Key Career Highlights:
+- Invisalign Pte Ltd (APAC, Dec 2019–Apr 2024, Director – Regional Concierge and Customer Service Lead): Led customer service and concierge operations across 14 APAC markets (300,000+ annual inquiries; 650,000+ annual leads across 12 markets), set up 5 Invisalign Experience Centres in 6 months, deployed 24/7 follow-the-sun technical support, integrated Twilio Flex with Salesforce, and achieved a 30% reduction in OPEX/COGS.
+- LifeScan, Johnson & Johnson Medical Asia Pacific (APAC, Dec 2005–Nov 2019, Asst. Director – Regional Customer Service): Led regional customer care and OneTouch digital ecosystem support across 12 APAC markets, reduced annual OPEX by 40% via call center consolidation and vendor renegotiation, and led Salesforce CRM rollout saving over US$500K annually.
+- Singtel (May 2004–Dec 2005, Senior Manager - Customer Service): Managed a 120-seat in-house and outsourced contact center using WFM and Erlang capacity planning, reducing staff turnover by 35% in 2005.
+- Ogilvy / Teledirect Pte Ltd (Oct 2001–Apr 2004, Senior / Account Manager - Customer Support): Managed multi-market outsourced contact center programs, account retention/renewals, B2B/enterprise client governance, and WFM/Erlang scheduling across APAC.
+Location: Singapore (Singaporean; fluent in English, Mandarin/Chinese, and Cantonese)
 """
 
 CACHE_FILE = "evaluator_progress.json"
