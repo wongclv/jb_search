@@ -26,6 +26,7 @@ Location: Singapore (Singaporean; fluent in English, Mandarin/Chinese, and Canto
 CACHE_FILE = "evaluator_progress.json"
 GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
+
 def load_cache():
     if os.path.exists(CACHE_FILE):
         try:
@@ -36,12 +37,14 @@ def load_cache():
             return set()
     return set()
 
+
 def save_cache(cache):
     try:
         with open(CACHE_FILE, "w", encoding="utf-8") as f:
             json.dump(list(cache), f, indent=2, ensure_ascii=False)
     except Exception as e:
         logging.error(f"Error saving cache file: {e}")
+
 
 def clean_and_parse_json(raw_text: str) -> dict:
     """Extracts and parses valid JSON objects from raw LLM text responses."""
@@ -61,6 +64,7 @@ def clean_and_parse_json(raw_text: str) -> dict:
                 pass
         return None
 
+
 def call_groq_with_retry(client, prompt, max_retries=5, initial_delay=3):
     """Calls Groq API with exponential backoff retries for rate limits (429)."""
     delay = initial_delay
@@ -70,19 +74,22 @@ def call_groq_with_retry(client, prompt, max_retries=5, initial_delay=3):
                 model=GROQ_MODEL,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.2,
-                max_tokens=500
+                max_tokens=500,
             )
             return response.choices[0].message.content
         except Exception as e:
             err_msg = str(e)
             if "429" in err_msg or "rate_limit" in err_msg.lower():
-                logging.warning(f"[429 Rate Limit] Retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})")
+                logging.warning(
+                    f"[429 Rate Limit] Retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})"
+                )
                 time.sleep(delay)
-                delay *= 2  # Exponential backoff
+                delay *= 2
             else:
                 logging.error(f"Groq API Error: {err_msg}")
                 raise e
     raise Exception("Max retries exceeded for Groq API due to Rate Limits.")
+
 
 def evaluate_job(client, job):
     title = job.get("title", "Unknown Title")
@@ -115,10 +122,16 @@ Respond ONLY in valid JSON with no markdown block wrappers, adhering strictly to
         logging.error(f"Error evaluating job '{title}' at '{company}': {e}")
         return None
 
+
 def send_email_digest(matched_jobs):
     api_key = os.getenv("MAILGUN_API_KEY")
     domain = os.getenv("MAILGUN_DOMAIN")
-    recipient = os.getenv("RECIPIENT_EMAIL") or os.getenv("TARGET_EMAIL") or "callcentre.wong@gmail.com"
+    recipient = (
+        os.getenv("RECIPIENT_EMAIL")
+        or os.getenv("ALERT_RECIPIENT_EMAIL")
+        or os.getenv("TARGET_EMAIL")
+        or "callcentre.wong@gmail.com"
+    )
 
     if not api_key or not domain:
         logging.error("Mailgun environment variables missing. Skipping email dispatch.")
@@ -193,15 +206,16 @@ def send_email_digest(matched_jobs):
             "from": f"AI Job Hunter <mailgun@{domain}>",
             "to": [recipient],
             "subject": f"🎯 Daily Executive AI Job Digest ({len(matched_jobs)} Strategic Matches)",
-            "html": html_content
+            "html": html_content,
         },
-        timeout=15
+        timeout=15,
     )
 
     if response.status_code == 200:
         logging.info(f"Mailgun email dispatched successfully to {recipient}")
     else:
         logging.error(f"Mailgun dispatch failed [{response.status_code}]: {response.text}")
+
 
 def main():
     if not os.path.exists("scraped_jobs.json"):
@@ -236,7 +250,7 @@ def main():
             continue
 
         eval_result = evaluate_job(groq_client, job)
-        
+
         # ONLY add to cache if evaluation succeeds
         if eval_result is not None:
             cache.add(job_id)
@@ -252,6 +266,7 @@ def main():
         send_email_digest(high_matches)
     else:
         logging.info("No new high-scoring matches found today.")
+
 
 if __name__ == "__main__":
     main()
