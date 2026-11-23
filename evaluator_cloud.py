@@ -24,7 +24,7 @@ Location: Singapore (Singaporean; fluent in English, Mandarin/Chinese, and Canto
 """
 
 CACHE_FILE = "evaluator_progress.json"
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
 
 
 def load_cache():
@@ -258,6 +258,8 @@ def main():
                 high_matches.append({"job": job, "eval": eval_result})
         else:
             logging.warning(f"Skipping cache entry for {job_id} due to processing failure.")
+
+        time.sleep(1.5)
 
     save_cache(cache)
     logging.info(f"Processed {len(scraped_jobs)} roles. Found {len(high_matches)} matches >= 75%.")
