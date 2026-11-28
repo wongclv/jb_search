@@ -8,7 +8,6 @@ from groq import Groq
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-# Master Dossier background context
 MASTER_DOSSIER = """
 Candidate: Wong Choong Leong Vincent (Vincent Wong)
 Target Level: Senior Regional / Director / Head of Operations, Customer Experience (CX) & Client/Customer Care
@@ -25,7 +24,26 @@ Location: Singapore (Singaporean; fluent in English, Mandarin/Chinese, and Canto
 
 CACHE_FILE = "evaluator_progress.json"
 GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
-MAX_EVALS_PER_RUN = int(os.getenv("MAX_EVALS_PER_RUN", "40"))
+MAX_EVALS_PER_RUN = int(os.getenv("MAX_EVALS_PER_RUN", "15"))
+
+RELEVANT_TITLE_KEYWORDS = [
+    "operation", "cx", "customer experience", "service delivery",
+    "contact center", "call center", "client service", "quality",
+    "compliance", "governance", "capa", "customer resolution",
+    "customer success", "customer advocacy", "client success", "concierge"
+]
+
+EXCLUDE_TITLE_KEYWORDS = [
+    "junior", "intern", "associate", "analyst", "executive assistant",
+    "technician", "food & beverage", "clinic", "retail"
+]
+
+
+def is_relevant_title(title: str) -> bool:
+    t = (title or "").lower()
+    if any(neg in t for neg in EXCLUDE_TITLE_KEYWORDS):
+        return False
+    return any(kw in t for kw in RELEVANT_TITLE_KEYWORDS)
 
 
 def load_cache():
@@ -48,80 +66,58 @@ def save_cache(cache):
 
 
 def clean_and_parse_json(raw_text: str) -> dict:
-    """Extracts and parses valid JSON objects from raw LLM text responses."""
-    cleaned = raw_text.strip()
+    cleaned = (raw_text or "").strip()
     if cleaned.startswith("```"):
         cleaned = re.sub(r"^```(?:json)?", "", cleaned, flags=re.IGNORECASE).strip()
         cleaned = re.sub(r"```$", "", cleaned).strip()
-
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        json_match = re.search(r"\{.*\}", cleaned, re.DOTALL)
-        if json_match:
+        match = re.search(r"\{.*\}", cleaned, re.DOTALL)
+        if match:
             try:
-                return json.loads(json_match.group(0))
+                return json.loads(match.group(0))
             except json.JSONDecodeError:
                 pass
         return None
-
-
-def call_groq_with_retry(client, prompt, max_retries=5, initial_delay=3):
-    """Calls Groq API with exponential backoff retries for rate limits (429)."""
-    delay = initial_delay
-    for attempt in range(max_retries):
-        try:
-            response = client.chat.completions.create(
-                model=GROQ_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.2,
-                max_tokens=500,
-            )
-            return response.choices[0].message.content
-        except Exception as e:
-            err_msg = str(e)
-            if "429" in err_msg or "rate_limit" in err_msg.lower():
-                logging.warning(
-                    f"[429 Rate Limit] Retrying in {delay} seconds... (Attempt {attempt + 1}/{max_retries})"
-                )
-                time.sleep(delay)
-                delay *= 2
-            else:
-                logging.error(f"Groq API Error: {err_msg}")
-                raise e
-    raise Exception("Max retries exceeded for Groq API due to Rate Limits.")
 
 
 def evaluate_job(client, job):
     title = job.get("title", "Unknown Title")
     company = job.get("company", "Unknown Company")
     location = job.get("location", "Singapore")
-    description = str(job.get("description", ""))[:1800]
+    description = str(job.get("description", ""))[:1200]
 
-    prompt = f"""
-You are an executive career recruiter. Evaluate the following job posting against the candidate dossier.
+    prompt = f"""Evaluate this job against the candidate dossier. Respond ONLY in valid JSON.
 
-Candidate Dossier:
+Candidate:
 {MASTER_DOSSIER}
 
-Job Title: {title}
+Title: {title}
 Company: {company}
 Location: {location}
 Description: {description}
 
-Respond ONLY in valid JSON with no markdown block wrappers, adhering strictly to this schema:
-{{
-  "match_score": <integer between 0 and 100>,
-  "fit_summary": "<2-3 sentence overview of why this matches or fails>",
-  "key_alignments": ["<alignment 1>", "<alignment 2>", "<alignment 3>"]
-}}
-"""
-    try:
-        raw_content = call_groq_with_retry(client, prompt)
-        return clean_and_parse_json(raw_content)
-    except Exception as e:
-        logging.error(f"Error evaluating job '{title}' at '{company}': {e}")
-        return None
+JSON schema:
+{{"match_score": <0-100>, "fit_summary": "<2 sentences>", "key_alignments": ["<point 1>", "<point 2>"]}}"""
+
+    for attempt in range(2):
+        try:
+            resp = client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1,
+                max_tokens=300,
+            )
+            return clean_and_parse_json(resp.choices[0].message.content)
+        except Exception as e:
+            if "429" in str(e) and attempt == 0:
+                logging.warning("[429 Rate Limit] Waiting 15s before 1 retry...")
+                time.sleep(15)
+            else:
+                logging.error(f"Error evaluating '{title}' at '{company}': {e}")
+                return None
+    return None
 
 
 def send_email_digest(matched_jobs):
@@ -138,70 +134,33 @@ def send_email_digest(matched_jobs):
         logging.error("Mailgun environment variables missing. Skipping email dispatch.")
         return
 
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <style>
-            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f4f6f9; color: #333; margin: 0; padding: 20px; }}
-            .container {{ max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }}
-            .header {{ background: #0f172a; color: #ffffff; padding: 20px 24px; }}
-            .header h1 {{ margin: 0; font-size: 20px; }}
-            .content {{ padding: 24px; }}
-            .card {{ border: 1px solid #e2e8f0; border-radius: 6px; padding: 18px; margin-bottom: 20px; background-color: #ffffff; }}
-            .job-title {{ font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 4px 0; }}
-            .company-name {{ font-size: 14px; color: #64748b; margin: 0 0 12px 0; }}
-            .badge {{ background: #dcfce7; color: #166534; font-weight: 700; font-size: 13px; padding: 4px 10px; border-radius: 9999px; display: inline-block; margin-bottom: 12px; }}
-            .summary {{ font-size: 13.5px; line-height: 1.5; color: #334155; margin-bottom: 12px; }}
-            .alignments {{ margin: 0 0 16px 0; padding-left: 20px; color: #475569; font-size: 13px; }}
-            .btn {{ display: inline-block; background-color: #2563eb; color: #ffffff !important; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 4px; }}
-            .footer {{ background: #f8fafc; padding: 16px 24px; font-size: 11px; color: #94a3b8; text-align: center; border-top: 1px solid #e2e8f0; }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>🎯 Executive AI Job Digest ({len(matched_jobs)} Strategic Matches)</h1>
-            </div>
-            <div class="content">
-    """
-
+    cards = []
     for item in matched_jobs:
         job = item["job"]
-        eval_data = item["eval"]
-        job_url = job.get("job_url") or job.get("url") or job.get("link") or "#"
+        ev = item["eval"]
+        url = job.get("job_url") or job.get("url") or job.get("link") or "#"
+        points = "".join(f"<li>{p}</li>" for p in ev.get("key_alignments", []))
+        cards.append(
+            f'<div style="border:1px solid #e2e8f0;border-radius:6px;padding:16px;margin-bottom:16px;">'
+            f'<h2 style="margin:0 0 4px 0;font-size:16px;">{job.get("title", "N/A")}</h2>'
+            f'<p style="margin:0 0 10px 0;color:#64748b;font-size:13px;">{job.get("company", "N/A")} • {job.get("location", "Singapore")}</p>'
+            f'<div style="background:#dcfce7;color:#166534;font-weight:700;font-size:13px;padding:3px 10px;border-radius:9999px;display:inline-block;margin-bottom:10px;">Match Score: {ev.get("match_score", 0)}%</div>'
+            f'<p style="margin:0 0 10px 0;font-size:13.5px;"><strong>Fit Summary:</strong> {ev.get("fit_summary", "")}</p>'
+            f'<ul style="margin:0 0 12px 0;padding-left:20px;font-size:13px;">{points}</ul>'
+            f'<a href="{url}" target="_blank" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:7px 14px;border-radius:4px;">View Listing Position</a>'
+            f'</div>'
+        )
 
-        html_content += f"""
-        <div class="card">
-            <h2 class="job-title">{job.get('title', 'N/A')}</h2>
-            <p class="company-name">{job.get('company', 'N/A')} • {job.get('location', 'Singapore')}</p>
-            <div class="badge">Match Score: {eval_data.get('match_score', 0)}%</div>
-            <p class="summary"><strong>Fit Summary:</strong> {eval_data.get('fit_summary', '')}</p>
-            <ul class="alignments">
-        """
-        for align in eval_data.get("key_alignments", []):
-            html_content += f"<li>{align}</li>"
+    html_content = (
+        f'<!DOCTYPE html><html><body style="font-family:sans-serif;background:#f4f6f9;padding:20px;">'
+        f'<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;">'
+        f'<div style="background:#0f172a;color:#fff;padding:20px 24px;"><h1 style="margin:0;font-size:20px;">🎯 Executive AI Job Digest ({len(matched_jobs)} Strategic Matches)</h1></div>'
+        f'<div style="padding:24px;">{"".join(cards)}</div>'
+        f'</div></body></html>'
+    )
 
-        html_content += f"""
-            </ul>
-            <p><a href="{job_url}" class="btn" target="_blank">View Listing Position</a></p>
-        </div>
-        """
-
-    html_content += """
-            </div>
-            <div class="footer">
-                Automated pipeline execution via GitHub Actions | Powered by Groq AI & Mailgun API
-            </div>
-        </div>
-    </body>
-    </html>
-    """
-
-    url = f"[https://api.mailgun.net/v3/](https://api.mailgun.net/v3/){domain}/messages"
-    response = requests.post(
-        url,
+    resp = requests.post(
+        f"[https://api.mailgun.net/v3/](https://api.mailgun.net/v3/){domain}/messages",
         auth=("api", api_key),
         data={
             "from": f"JB Search Digest <mailgun@{domain}>",
@@ -212,10 +171,10 @@ def send_email_digest(matched_jobs):
         timeout=15,
     )
 
-    if response.status_code == 200:
+    if resp.status_code == 200:
         logging.info(f"Mailgun email dispatched successfully to {recipient}")
     else:
-        logging.error(f"Mailgun dispatch failed [{response.status_code}]: {response.text}")
+        logging.error(f"Mailgun dispatch failed [{resp.status_code}]: {resp.text}")
 
 
 def main():
@@ -234,43 +193,50 @@ def main():
         logging.info("scraped_jobs.json is empty. Nothing to process.")
         return
 
-    cache = load_cache()
     groq_api_key = os.getenv("GROQ_API_KEY")
     if not groq_api_key:
         logging.error("GROQ_API_KEY environment variable missing.")
         return
 
-    groq_client = Groq(api_key=groq_api_key)
+    cache = load_cache()
+    client = Groq(api_key=groq_api_key)
     high_matches = []
     evaluated_count = 0
+    skipped_filter_count = 0
 
     for job in scraped_jobs:
         if evaluated_count >= MAX_EVALS_PER_RUN:
-            logging.info(f"Reached batch cap of {MAX_EVALS_PER_RUN} evaluations. Saving progress and exiting loop.")
+            logging.info(f"Reached batch cap of {MAX_EVALS_PER_RUN} evaluations. Saving progress.")
             break
 
+        title = job.get("title", "")
         job_url = job.get("job_url") or job.get("url") or job.get("link")
-        job_id = job_url if job_url else f"{job.get('title')}_{job.get('company')}"
+        job_id = job_url if job_url else f"{title}_{job.get('company')}"
 
         if job_id in cache:
             continue
 
-        eval_result = evaluate_job(groq_client, job)
+        if not is_relevant_title(title):
+            cache.add(job_id)
+            skipped_filter_count += 1
+            continue
+
+        result = evaluate_job(client, job)
         evaluated_count += 1
 
-        # ONLY add to cache if evaluation succeeds
-        if eval_result is not None:
+        if result is not None:
             cache.add(job_id)
-            if eval_result.get("match_score", 0) >= 75:
-                high_matches.append({"job": job, "eval": eval_result})
+            if result.get("match_score", 0) >= 75:
+                high_matches.append({"job": job, "eval": result})
         else:
             logging.warning(f"Skipping cache entry for {job_id} due to processing failure.")
 
-        time.sleep(5)
+        time.sleep(2)
 
     save_cache(cache)
     logging.info(
-        f"Evaluated {evaluated_count} new roles (out of {len(scraped_jobs)} total). Found {len(high_matches)} matches >= 75%."
+        f"Evaluated {evaluated_count} relevant roles (filtered out {skipped_filter_count} non-matching titles). "
+        f"Found {len(high_matches)} matches >= 75%."
     )
 
     if high_matches:
