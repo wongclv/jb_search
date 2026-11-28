@@ -159,22 +159,24 @@ def send_email_digest(matched_jobs):
         f'</div></body></html>'
     )
 
-    resp = requests.post(
-        f"[https://api.mailgun.net/v3/](https://api.mailgun.net/v3/){domain}/messages",
-        auth=("api", api_key),
-        data={
-            "from": f"JB Search Digest <mailgun@{domain}>",
-            "to": [recipient],
-            "subject": f"🎯 Daily Executive AI Job Digest ({len(matched_jobs)} Strategic Matches)",
-            "html": html_content,
-        },
-        timeout=15,
-    )
-
-    if resp.status_code == 200:
-        logging.info(f"Mailgun email dispatched successfully to {recipient}")
-    else:
-        logging.error(f"Mailgun dispatch failed [{resp.status_code}]: {resp.text}")
+    try:
+        resp = requests.post(
+            f"[https://api.mailgun.net/v3/](https://api.mailgun.net/v3/){domain}/messages",
+            auth=("api", api_key),
+            data={
+                "from": f"JB Search Digest <mailgun@{domain}>",
+                "to": [recipient],
+                "subject": f"🎯 Daily Executive AI Job Digest ({len(matched_jobs)} Strategic Matches)",
+                "html": html_content,
+            },
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            logging.info(f"Mailgun email dispatched successfully to {recipient}")
+        else:
+            logging.error(f"Mailgun dispatch failed [{resp.status_code}]: {resp.text}")
+    except Exception as e:
+        logging.error(f"Mailgun request exception: {e}")
 
 
 def main():
